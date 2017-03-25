@@ -16,6 +16,9 @@ class Header extends Component {
                 <br/>
                 <br/>
                 <AccountsUIWrapper/>
+                <span className="text">
+                  <strong>{this.props.username}</strong>
+                </span>
             </div>
         </header>
         <section id="promo" className="promo section offset-header">

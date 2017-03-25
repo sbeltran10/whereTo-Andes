@@ -268,44 +268,35 @@ class App extends Component {
 
 
   render() {
-    if (this.state.resultadoBoolean) {
-      return (
-        <div>
-          <Header/>
-          { this.props.currentUser ?
+    return (
+      <div>
+        <Header/>
+        <section id="preguntas" className="about section">
+          <div className="row">
+            <div className="col-md-12">
+              <h2 className="title text-center">{this.state.pregunta}</h2>
+            </div>
+          </div>
+          { this.state.resultadoBoolean ?
             <section id="resultados" className="about section">
               <Resultado guardarHistoria={this.guardarHistoria.bind(this)} resultado={this.state.resultado} />
-            </section> : ''
-          }
-          <div className="tituloGrafico">Aquí puedes ver las respuestas que has dado a preguntas anteriores. Organizadas por el segundo exacto en el que las respondiste. Si respondiste mal y quieres devolverte a alguna, solo debes dar click en ella: </div>
-        </div>
-      )
-    }
-    else {
-      return (
-        <div>
-          <Header/>
-          <section id="preguntas" className="about section">
-            <div className="row">
-              <div className="col-md-12">
-                <h2 className="title text-center">{this.state.pregunta}</h2>
-              </div>
-            </div>
+            </section> :
             <div className="row">
               <div id="esconder">
                 <Respuestas idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)} />
               </div>
             </div>
-          </section>
-          { this.props.currentUser ?
-            <div className="row">
-              <h2 className="title text-center">Historiales</h2>
-              <Historias historias={this.state.historias} cargarHistoria={this.cargarHistoria.bind(this)} />
-            </div>: ''
           }
-        </div>
-      )
-    }
+
+        </section>
+        { this.props.currentUser ?
+          <div className="row">
+            <h2 className="title text-center">Historiales</h2>
+            <Historias historias={this.state.historias} cargarHistoria={this.cargarHistoria.bind(this)} />
+          </div>: ''
+        }
+      </div>
+    )
   }
 }
 
