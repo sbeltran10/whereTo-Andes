@@ -3,7 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
-import {Preguntas} from '../../api/preguntas.js'
+import { Preguntas } from '../../api/preguntas.js'
 import Respuestas from './respuestas';
 import Resultado from './resultado';
 import Login from './login';
@@ -14,6 +14,13 @@ import Header from './Header.jsx'
 
 const ROOT_URL = "https://whereto-andes-server.herokuapp.com";
 const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
+
+if (Meteor.isClient) {
+  Deps.autorun(function () {
+    var result = Preguntas.find({}).fetch();
+    console.log(result);
+  });
+}
 
 // App component - represents the whole app
 class App extends Component {
@@ -270,14 +277,14 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header />
         <section id="preguntas" className="about section">
           <div className="row">
             <div className="col-md-12">
               <h2 className="title text-center">{this.state.pregunta}</h2>
             </div>
           </div>
-          { this.state.resultadoBoolean ?
+          {this.state.resultadoBoolean ?
             <section id="resultados" className="about section">
               <Resultado guardarHistoria={this.guardarHistoria.bind(this)} resultado={this.state.resultado} />
             </section> :
@@ -289,11 +296,11 @@ class App extends Component {
           }
 
         </section>
-        { this.props.currentUser ?
+        {this.props.currentUser ?
           <div className="row">
             <h2 className="title text-center">Historiales</h2>
             <Historias historias={this.state.historias} cargarHistoria={this.cargarHistoria.bind(this)} />
-          </div>: ''
+          </div> : ''
         }
       </div>
     )
