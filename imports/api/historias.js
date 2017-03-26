@@ -28,14 +28,14 @@ Meteor.methods({
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
-        Tasks.insert(historia);
+        Historias.insert(historia);
     },
-    'historias.remove'(taskId) {
+    'historias.remove'(historiaId) {
 
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
-        Tasks.remove(taskId);
+        Historias.remove(historiaId);
     },
 
 });

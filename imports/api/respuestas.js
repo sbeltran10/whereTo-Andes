@@ -29,14 +29,14 @@ Meteor.methods({
         if (!Meteor.user() || Meteor.user().rol!=='admin') {
             throw new Meteor.Error('not-authorized');
         }
-        Tasks.insert(respuesta);
+        Respuestas.insert(respuesta);
     },
-    'respuestas.remove'(taskId) {
+    'respuestas.remove'(respuestaId) {
         
          if (!Meteor.user() || Meteor.user().rol !== 'admin') {
             throw new Meteor.Error('not-authorized');
         }
-        Tasks.remove(taskId);
+        Respuestas.remove(respuestaId);
     },
 
 });
