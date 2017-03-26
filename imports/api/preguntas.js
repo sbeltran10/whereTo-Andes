@@ -6,7 +6,7 @@ export const Preguntas = new Mongo.Collection('preguntas');
 
 Preguntas.schema = new SimpleSchema({
     contenido: { type: String },
-    respuestasHijo: { type: [String], optional: true }
+    respuestasHijo: { type: [Object], optional: true }
 });
 
 Preguntas.attachSchema(Preguntas.schema);

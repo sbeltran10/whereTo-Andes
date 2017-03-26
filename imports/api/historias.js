@@ -8,10 +8,7 @@ Historias.schema = new SimpleSchema({
     nombre: { type: String },
     fecha: { type: Date },
     usuario: { type: String },
-    pasos: [{
-        pregunta: { type: Object },
-        respuesta: { type: Object }
-    }]
+    pasos: { type: [Object], optional: true }
 });
 
 Historias.attachSchema(Historias.schema);
@@ -34,7 +31,7 @@ Meteor.methods({
         Tasks.insert(historia);
     },
     'historias.remove'(taskId) {
-        
+
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
