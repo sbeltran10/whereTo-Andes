@@ -134,10 +134,10 @@ h5,
 h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  color: #17baef;
+  color: #1796ef;
 }
 a {
-  color: #17baef;
+  color: #1796ef;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
   -ms-transition: all 0.4s ease-in-out;
@@ -167,22 +167,25 @@ a.btn:focus {
 }
 a.btn-cta-primary,
 .btn-cta-primary {
-  background: #074f66;
-  border: 1px solid #074f66;
+  background: #053d4e;
+  border: 1px solid #053d4e;
+  width:20em;
   color: #fff;
   font-weight: 600;
   text-transform: uppercase;
 }
 a.btn-cta-primary:hover,
 .btn-cta-primary:hover {
-  background: #053c4e;
-  border: 1px solid #053c4e;
+  background: #042a36;
+  border: 1px solid #042a36;
+  width:20em;
   color: #fff;
 }
 a.btn-cta-secondary,
 .btn-cta-secondary {
   background: #eebf3f;
   border: 1px solid #eebf3f;
+  width:20em;
   color: #fff;
   font-weight: 600;
   text-transform: uppercase;
@@ -191,6 +194,7 @@ a.btn-cta-secondary:hover,
 .btn-cta-secondary:hover {
   background: #ecb728;
   border: 1px solid #ecb728;
+  width:20em;
   color: #fff;
 }
 .text-highlight {
@@ -205,7 +209,7 @@ pre code {
 /* ======= Header ======= */
 .header {
   padding: 10px 0;
-  background: #17baef;
+  background: #1796ef;
   color: #fff;
   position: fixed;
   width: 100%;
@@ -218,7 +222,7 @@ pre code {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 .header.navbar-fixed-top .logo a {
-  color: #17baef;
+  color: #1796ef;
 }
 .header.navbar-fixed-top .main-nav .nav .nav-item a {
   color: #666;
@@ -261,7 +265,7 @@ pre code {
   font-family: 'Montserrat', sans-serif;
 }
 .header .main-nav .nav .nav-item.active a {
-  color: #17baef;
+  color: #1796ef;
   background: none;
 }
 .header .main-nav .nav .nav-item a {
@@ -286,20 +290,20 @@ pre code {
   background: none;
 }
 .header .main-nav .nav .nav-item.active {
-  color: #17baef;
+  color: #1796ef;
 }
 .header .main-nav .nav .nav-item.last {
   margin-right: 0;
 }
 /* ======= Promo Section ======= */
 .promo {
-  background: #17baef;
+  background: #1796ef;
   color: #fff;
   padding-top: 150px;
 }
 .promo .title {
   font-size: 98px;
-  color: #074f66;
+  color: #05304e;
   margin-top: 0;
 }
 .promo .title .highlight {
@@ -382,7 +386,7 @@ pre code {
 /* ======= Features Section ======= */
 .features {
   padding: 80px 0;
-  background: #17baef;
+  background: #1796ef;
   color: #fff;
 }
 .features .title {
@@ -525,7 +529,7 @@ pre code {
 /* ======= Contact Section ======= */
 .contact {
   padding: 80px 0;
-  background: #17baef;
+  background: #1796ef;
   color: #fff;
 }
 .contact .contact-inner {
@@ -662,7 +666,7 @@ pre code {
 /* ======= Footer ======= */
 .footer {
   padding: 15px 0;
-  background: #042a36;
+  background: #05304e;
   color: #fff;
 }
 .footer .copyright {
@@ -761,4 +765,33 @@ pre code {
 }
 .login-state {
   color: #000;
+}
+
+.header .container-fluid span .login-buttons-dropdown-align- .login-link-and-dropdown-list .login-link-text{
+  color: #fff
+}
+
+.navbar-fixed-top .container-fluid span .login-buttons-dropdown-align- .login-link-and-dropdown-list .login-link-text{
+  color: #1796ef !important;
+}
+
+.btn-info{
+  width:20em;
+  background:#0f88dd !important;
+}
+
+.btn-info:hover {
+  background-color: #0c6bae !important;
+}
+
+.btn-cta-secondary{
+  width:20em;
+}
+
+.list-inline li a{
+  color:#47acf2;
+}
+
+small.copyright a{
+  color:#47acf2;
 }

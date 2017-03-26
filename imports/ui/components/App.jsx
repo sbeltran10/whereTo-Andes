@@ -178,7 +178,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header user={this.props.currentUser} />
+        <Header/>
         <section id="preguntas" className="about section">
           {this.state.resultadoBoolean ?
             <section id="resultados" className="about section">
@@ -204,7 +204,7 @@ class App extends Component {
         }
         </section>
         {this.props.currentUser ?
-          <section id="preguntas" className="about section">
+          <section id="historiales" className="about section">
             <div className="row">
               <div className="col-md-12">
                 <h2 className="title text-center">Historiales</h2>
