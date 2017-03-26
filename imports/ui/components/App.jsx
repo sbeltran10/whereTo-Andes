@@ -3,15 +3,15 @@ import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
-import { Preguntas } from '../../api/preguntas.js'
-import { Respuestas } from '../../api/respuestas.js'
-import { Resultados } from '../../api/resultados.js'
+import { Preguntas } from '../../api/preguntas.js';
+import { Respuestas } from '../../api/respuestas.js';
+import { Resultados } from '../../api/resultados.js';
+import { Historias } from '../../api/historias.js';
 import RespuestasComponent from './respuestas';
 import ResultadoComponent from './resultado';
 import CreacionComponent from './creacion';
 import Registro from './registro';
-import Historias from './historias';
-import Historia from './historia';
+import HistoriasComponet from './historias';
 import Header from './Header.jsx'
 
 const ROOT_URL = "https://whereto-andes-server.herokuapp.com";
@@ -21,18 +21,19 @@ const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
 class App extends Component {
   constructor(props) {
     super(props);
-    var container = document.getElementById('visualization');
     this.state = {
       idPregunta: '',
       pregunta: '',
       respuestas: [],
       resultado: {},
-      numero: 0,
+      atras: false,
       resultadoBoolean: false,
       idUsuario: '',
       historias: [],
       historia: {},
-      modoCreacion: false
+      modoCreacion: false,
+      pasos: []
+
     }
     this.cargarPregunta(PREGUNTA_INICIO);
   }
@@ -61,6 +62,7 @@ class App extends Component {
         });
         a.loadInterval && a.setState({
           pregunta: pregunta.contenido,
+          idPregunta: pregunta._id,
           respuestas: respuestasHijo
         });
       }
@@ -69,6 +71,18 @@ class App extends Component {
 
   cargarRespuesta(id, pregunta, idPregunta) {
     var a = this;
+    var pasos= this.state.pasos;
+    pasos.push({
+      pregunta: { _id: idPregunta},
+      respuesta:{_id: id}
+    });
+    console.log(pasos);
+    this.loadInterval && this.setState({
+        pregunta: pregunta.contenido,
+        respuestas: respuestasHijo,
+        atras:true,
+        pasos: pasos
+      });
     Deps.autorun(function () {
       respuesta = Respuestas.findOne(id);
       if (respuesta) {
@@ -83,122 +97,74 @@ class App extends Component {
 
   cargarResultado(id) {
     var a = this;
+    var pasos= this.state.pasos;
+    pasos.push({
+      pregunta: { _id: id }
+    });
+    console.log(pasos);
     Deps.autorun(function () {
       resultado = Resultados.findOne(id);
-      console.log(resultado);
-      if (resultado) {
-        console.log(resultado.nombre);
+      if(resultado) {
         a.loadInterval && a.setState({
           resultado: {
             nombre: resultado.nombre,
             ubicacion: resultado.ubicacion,
             imagen: resultado.imagen,
-            horario: resultado.horario
-          }
-        });
-        a.setState({
+            horario: resultado.horario,
+            pasos: pasos
+          },
           resultadoBoolean: true
         });
       }
     });
   }
 
-  getCurrentDate() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-    var hh = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
 
-    if (dd < 10) {
-      dd = '0' + dd
-    }
+    getCurrentDate() {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!
+      var yyyy = today.getFullYear();
+      var hh = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
 
-    if (mm < 10) {
-      mm = '0' + mm
-    }
-
-    return mm + '/' + dd + '/' + yyyy + "@" + hh + ":" + m + ":" + s;
-  }
-
-  guardarHistoria(nombre) {
-    var pasos = [];
-    for (var i = 0; i < this.state.valoresRed.length; i++) {
-      var actual = this.state.valoresRed[i];
-      if (i === this.state.valoresRed.length - 1) {
-        pasos.push({
-          pregunta: { pid: actual.id, contenido: actual.pregunta },
-          respuesta: {}
-        }
-        );
-      } else {
-        pasos.push({
-          pregunta: { pid: actual.id, contenido: actual.pregunta },
-          respuesta: { rid: actual.idRespuesta, contenido: actual.respuesta }
-        }
-        );
+      if (dd < 10) {
+        dd = '0' + dd
       }
-    }
-    var historia = {
-      usuario: this.state.idUsuario,
-      nombre: nombre,
-      pasos: pasos
-    }
-    axios.post(ROOT_URL + "/historias", historia).then(response => {
-      if (response.status === 200) {
-        alert("Tu historia se a guardado de forma exitosa");
-        this.cargarHistorias(this.state.idUsuario);
-      }
-      else {
-        alert("Ocurrio un error guardando tu historia");
-      }
-    });
-  }
 
-  cargarHistorias(id) {
-    axios.get(ROOT_URL + "/historias/usuarios/" + id)
-      .then(response => {
-        this.setState({
-          historias: response.data
-        })
-      })
-  }
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+
+      return mm + '/' + dd + '/' + yyyy + "@" + hh + ":" + m + ":" + s;
+    }
+
+    guardarHistoria(nombre) {
+      var historia = {
+        nombre: nombre,
+        fecha: this.getCurrentDate(),
+        pasos: this.state.pasos,
+        usuario: this.props.currentUser._id
+      }
+
+      Meteor.call('historias.insert', historia);
+      alert("La historia ha sido creada de forma exitosa");
+    }
 
   cargarHistoria(id) {
-    this.setState({
-      idPregunta: '',
-      pregunta: '',
-      respuestas: [],
-      resultado: {},
-      valoresRed: [],
-      numero: 0,
-      historia: {}
-    })
-    axios.get(ROOT_URL + "/historias/" + id)
-      .then(response => {
-        this.setState({
-          historia: response.data
-        })
-        this.cargarTimelineConHistoria();
-      })
-  }
-
-  getResultados(i) {
-    axios.get(ROOT_URL + "/respuestas/" + this.state.historia.pasos[i].respuesta)
-      .then(response => {
-        this.state.numero = this.state.numero + 1;
-        this.state.valoresRed.push(
-          {
-            id: this.state.historia.pasos[i].pregunta,
-            idRespuesta: response.data._id,
-            numero: this.state.numero,
-            pregunta: res.data.contenido,
-            respuesta: response.data.contenido,
-            start: this.getCurrentDate()
-          });
-      });
+    var a = this;
+    Deps.autorun(function () {
+      historia = Historias.findOne(id);
+      if(historia) {
+        a.loadInterval && a.setState({
+          pasos: historia.pasos,
+          resultadoBoolean: true,
+        });
+        console.log(historia.pasos);
+        a.cargarResultado(historia.pasos[(historia.pasos.length)-1].pregunta);
+      }
+    });
   }
 
   toggleModoCreacion() {
@@ -209,8 +175,6 @@ class App extends Component {
     console.log(this.state.modoCreacion);
   }
 
-
-
   render() {
     return (
       <div>
@@ -218,7 +182,7 @@ class App extends Component {
         <section id="preguntas" className="about section">
           {this.state.resultadoBoolean ?
             <section id="resultados" className="about section">
-              <ResultadoComponent guardarHistoria={this.guardarHistoria.bind(this)} resultado={this.state.resultado} />
+              <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)}/>
             </section> :
             <div>
               <div className="row">
@@ -240,10 +204,14 @@ class App extends Component {
         }
         </section>
         {this.props.currentUser ?
-          <div className="row">
-            <h2 className="title text-center">Historiales</h2>
-            <Historias historias={this.state.historias} cargarHistoria={this.cargarHistoria.bind(this)} />
-          </div> : ''
+          <section id="preguntas" className="about section">
+            <div className="row">
+              <div className="col-md-12">
+                <h2 className="title text-center">Historiales</h2>
+                <HistoriasComponet currentUser={this.props.currentUser} cargarHistoria={this.cargarHistoria.bind(this)}/>
+              </div>
+            </div>
+          </section>: ''
         }
       </div>
     )

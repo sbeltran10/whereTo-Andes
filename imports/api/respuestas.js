@@ -8,7 +8,7 @@ Respuestas.schema = new SimpleSchema({
     contenido: { type: String},
     simbolo: { type: String, optional:true},
     preguntasHijo:{ type: [SimpleSchema.RegEx.Id], optional:true},
-    resultasdoHijo: { type: [SimpleSchema.RegEx.Id], optional:true}
+    resultadosHijo: { type: [SimpleSchema.RegEx.Id], optional:true}
 });
 
 Respuestas.attachSchema(Respuestas.schema);

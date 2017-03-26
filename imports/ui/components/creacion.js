@@ -19,6 +19,7 @@ class Creacion extends Component {
 		}
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		console.log(this.props.idPregunta);
 	}
 
 	handleInputChange(event) {
@@ -44,12 +45,11 @@ class Creacion extends Component {
 						contenido: descripcionRespuesta,
 						simbolo: "",
 						preguntasHijo: [result],
-						resultasdoHijo: []
+						resultadosHijo: []
 					}, function (error, result) {
 						if (error)
 							console.log(error);
 						else {
-							console.log(idPregunta);
 							Meteor.call('preguntas.insertRespuesta',
 								idPregunta, result, function (error, result) {
 									if (error)
@@ -77,13 +77,13 @@ class Creacion extends Component {
 						contenido: descripcionRespuesta,
 						simbolo: "",
 						preguntasHijo: [],
-						resultasdoHijo: [hijoId]
+						resultadosHijo: [result]
 					}, function (error, result) {
 						if (error)
 							console.log(error);
 						else {
 							Meteor.call('preguntas.insertRespuesta',
-								estado.preguntaId, result, function (error, result) {
+								idPregunta, result, function (error, result) {
 									if (error)
 										console.log(error);
 									else
