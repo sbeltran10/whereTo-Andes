@@ -17,7 +17,12 @@ class Header extends Component {
                 <br/>
                 <AccountsUIWrapper/>
                 <span className="text">
-                  <strong>{this.props.username}</strong>
+                  <strong>
+                    { this.props.user ?
+                      this.props.user.username :
+                      ''
+                    }
+                  </strong>
                 </span>
             </div>
         </header>

@@ -49,7 +49,7 @@ class Resultado extends Component {
           <div className="row">
             <div className="col-md-12">
               <h2 className="title text-center">{this.props.resultado.nombre}</h2>
-              <img className="center" src={this.props.resultado.imagen} width="200px" height="50px" />
+              <img className="center" src={this.props.resultado.imagen} width="200px" height="100px" />
             </div>
           </div>
           <div className="row pad">
@@ -79,7 +79,7 @@ class Resultado extends Component {
           <div className="row">
             <div className="col-md-12">
               <h2 className="title text-center">{this.props.resultado.nombre}</h2>
-              <img className="center" src={this.props.resultado.imagen} width="200px" height="50px" />
+              <img className="center" src={this.props.resultado.imagen} width="200px" height="100px" />
             </div>
           </div>
           <div className="row pad">

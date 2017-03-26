@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
 import { Preguntas } from '../../api/preguntas.js'
-import Respuestas from './respuestas';
-import Resultado from './resultado';
-import Login from './login';
+import { Respuestas } from '../../api/respuestas.js'
+import { Resultados } from '../../api/resultados.js'
+import RespuestasComponent from './respuestas';
+import ResultadoComponent from './resultado';
 import Registro from './registro';
 import Historias from './historias';
 import Historia from './historia';
@@ -15,12 +16,6 @@ import Header from './Header.jsx'
 const ROOT_URL = "https://whereto-andes-server.herokuapp.com";
 const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
 
-if (Meteor.isClient) {
-  Deps.autorun(function () {
-    var result = Preguntas.find({}).fetch();
-    console.log(result);
-  });
-}
 
 // App component - represents the whole app
 class App extends Component {
@@ -32,7 +27,6 @@ class App extends Component {
       pregunta: '',
       respuestas: [],
       resultado: {},
-      valoresRed: [],
       numero: 0,
       resultadoBoolean: false,
       idUsuario: '',
@@ -42,128 +36,70 @@ class App extends Component {
     this.cargarPregunta(PREGUNTA_INICIO);
   }
 
+  componentDidMount() {
+      this.loadInterval = setInterval(this.loadSearches, this.props.pollInterval);
+  }
+
+  componentWillUnmount () {
+      this.loadInterval && clearInterval(this.loadInterval);
+      this.loadInterval = false;
+  }
+
   cargarPregunta(id) {
-    axios.get(ROOT_URL + "/preguntas/" + id)
-      .then(response => {
-        this.setState({
-          idPregunta: id,
-          pregunta: response.data.contenido,
-          respuestas: response.data.respuestas
-        })
-      })
-    if (this.state.numero === 1) {
-      $('html,body').animate({
-        scrollTop: $("#visualization").offset().top
-      },
-        'slow');
-    }
-  }
-
-  cargarResultado(id) {
-    axios.get(ROOT_URL + "/resultados/" + id)
-      .then(response => {
-        this.setState({
-          resultadoBoolean: true,
-          resultado: {
-            nombre: response.data.nombre,
-            ubicacion: response.data.ubicacion,
-            imagen: response.data.imagen,
-            horario: response.data.horario
+    var a = this;
+    Deps.autorun(function () {
+      pregunta = Preguntas.findOne({_id: new Mongo.ObjectID(id)});
+      if(pregunta) {
+        respuestasHijoId = pregunta.respuestasHijo;
+        respuestasHijo=[];
+        respuestasHijoId.map((value,index) =>{
+          v = Respuestas.findOne(value)
+          if(v) {
+            respuestasHijo.push(v)
           }
-        })
-        this.state.numero = this.state.numero + 1;
-        this.state.valoresRed.push(
-          {
-            id: id,
-            idRespuesta: "-1",
-            numero: this.state.numero,
-            pregunta: "Respuesta",
-            respuesta: response.data.nombre,
-            start: this.getCurrentDate()
+        });
+        a.loadInterval && a.setState({
+            pregunta: pregunta.contenido,
+            respuestas: respuestasHijo
           });
-        this.cargarTimeline();
-      })
-  }
-
-  cargarRespuesta(id, pregunta, idPregunta) {
-    $(".tituloGrafico").css("visibility", "visible");
-    axios.get(ROOT_URL + "/respuestas/" + id)
-      .then(response => {
-        this.state.numero = this.state.numero + 1;
-        this.state.valoresRed.push(
-          {
-            id: idPregunta,
-            idRespuesta: id,
-            numero: this.state.numero,
-            pregunta: pregunta,
-            respuesta: response.data.contenido,
-            start: this.getCurrentDate()
-          });
-        if (response.data.resultadosHijo.length === 0 && response.data.preguntasHijo.length === 0) {
-          this.setState({
-            resultadoBoolean: true,
-            resultado: {
-              nombre: ""
-            }
-          })
-        }
-        else {
-          this.cargarTimeline();
-          if (response.data.resultadosHijo.length === 0) {
-            this.cargarPregunta(response.data.preguntasHijo[0]);
-          } else {
-            this.cargarResultado(response.data.resultadosHijo[0]);
-          }
-        }
-      })
-  }
-
-  cargarTimeline() {
-    // create a handlebars template
-    var source = document.getElementById('item-template').innerHTML;
-    var template = Handlebars.compile(source);
-
-    // DOM element where the Timeline will be attached
-    var container = document.getElementById('visualization');
-    $("#visualization").html("");
-
-    // Create a DataSet (allows two way data-binding)
-    var items = new vis.DataSet(this.state.valoresRed);
-
-    // Configuration for the Timeline
-    var options = {
-      // specify a template for the items
-      template: template
-    };
-
-    var timeline = new vis.Timeline(container, items, options);
-    var este = this;
-    timeline.on("click", function (params) {
-      este.cargarPreguntaTimeline(params.item);
+      }
     });
   }
 
-  cargarPreguntaTimeline(item) {
-    var termino = false;
-    for (var i = this.state.valoresRed.length; i > 0 && !termino; i--) {
-      if (this.state.valoresRed[i - 1].id === item) {
-        if (this.state.valoresRed[i - 1].idRespuesta === "-1") {
-          alert("Ups!!! No puedes volver a la respuesta en la que ya estas :D");
-          termino = true;
-        } else {
-          termino = true;
-          this.state.numero = i - 1;
-          this.setState({
-            resultadoBoolean: false
-          });
-          this.state.valoresRed.pop();
-          this.cargarPregunta(item);
-          this.cargarTimeline();
+  cargarRespuesta(id, pregunta, idPregunta) {
+    var a = this;
+    Deps.autorun(function () {
+      respuesta = Respuestas.findOne(id);
+      if(respuesta) {
+        if(respuesta.preguntasHijo[0]) {
+          a.cargarPregunta(respuesta.preguntasHijo[0]._str);
+        } else if(respuesta.resultadosHijo[0]) {
+            a.cargarResultado(respuesta.resultadosHijo[0]);
         }
-      } else {
-        this.state.valoresRed.pop();
       }
-    }
+    });
+  }
+
+  cargarResultado(id) {
+    var a = this;
+    Deps.autorun(function () {
+      resultado = Resultados.findOne(id);
+      console.log(resultado);
+      if(resultado) {
+        console.log(resultado.nombre);
+        a.loadInterval && a.setState({
+          resultado: {
+            nombre: resultado.nombre,
+            ubicacion: resultado.ubicacion,
+            imagen: resultado.imagen,
+            horario: resultado.horario
+          }
+        });
+        a.setState({
+          resultadoBoolean: true
+        });
+      }
+    });
   }
 
   getCurrentDate() {
@@ -248,15 +184,6 @@ class App extends Component {
       })
   }
 
-  cargarTimelineConHistoria() {
-    for (var i = 0; i < this.state.historia.pasos.length - 1; i++) {
-      if (i !== 0) {
-        this.cargarPregunta(this.state.historia.pasos[i].pregunta.pid);
-      }
-      this.cargarRespuesta(this.state.historia.pasos[i].respuesta.rid, this.state.historia.pasos[i].pregunta.contenido, this.state.historia.pasos[i].pregunta.pid);
-    }
-  }
-
   getResultados(i) {
     axios.get(ROOT_URL + "/respuestas/" + this.state.historia.pasos[i].respuesta)
       .then(response => {
@@ -277,20 +204,22 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header user={this.props.currentUser}/>
         <section id="preguntas" className="about section">
-          <div className="row">
-            <div className="col-md-12">
-              <h2 className="title text-center">{this.state.pregunta}</h2>
-            </div>
-          </div>
           {this.state.resultadoBoolean ?
             <section id="resultados" className="about section">
-              <Resultado guardarHistoria={this.guardarHistoria.bind(this)} resultado={this.state.resultado} />
+              <ResultadoComponent guardarHistoria={this.guardarHistoria.bind(this)} resultado={this.state.resultado} />
             </section> :
-            <div className="row">
-              <div id="esconder">
-                <Respuestas idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+            <div>
+              <div className="row">
+                <div className="col-md-12">
+                  <h2 className="title text-center">{this.state.pregunta}</h2>
+                </div>
+              </div>
+              <div className="row">
+                <div id="esconder">
+                  <RespuestasComponent idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+                </div>
               </div>
             </div>
           }
@@ -308,12 +237,10 @@ class App extends Component {
 }
 
 App.propTypes = {
-  preguntas: PropTypes.array.isRequired,
 };
 
 export default createContainer(() => {
   return {
-    preguntas: Preguntas.find({}).fetch(),
     currentUser: Meteor.user(),
   };
 }, App);
