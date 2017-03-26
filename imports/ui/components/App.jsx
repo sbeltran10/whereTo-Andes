@@ -8,6 +8,7 @@ import { Respuestas } from '../../api/respuestas.js'
 import { Resultados } from '../../api/resultados.js'
 import RespuestasComponent from './respuestas';
 import ResultadoComponent from './resultado';
+import CreacionComponent from './creacion';
 import Registro from './registro';
 import Historias from './historias';
 import Historia from './historia';
@@ -15,7 +16,6 @@ import Header from './Header.jsx'
 
 const ROOT_URL = "https://whereto-andes-server.herokuapp.com";
 const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
-
 
 // App component - represents the whole app
 class App extends Component {
@@ -31,37 +31,38 @@ class App extends Component {
       resultadoBoolean: false,
       idUsuario: '',
       historias: [],
-      historia: {}
+      historia: {},
+      modoCreacion: false
     }
     this.cargarPregunta(PREGUNTA_INICIO);
   }
 
   componentDidMount() {
-      this.loadInterval = setInterval(this.loadSearches, this.props.pollInterval);
+    this.loadInterval = setInterval(this.loadSearches, this.props.pollInterval);
   }
 
-  componentWillUnmount () {
-      this.loadInterval && clearInterval(this.loadInterval);
-      this.loadInterval = false;
+  componentWillUnmount() {
+    this.loadInterval && clearInterval(this.loadInterval);
+    this.loadInterval = false;
   }
 
   cargarPregunta(id) {
     var a = this;
     Deps.autorun(function () {
-      pregunta = Preguntas.findOne({_id: new Mongo.ObjectID(id)});
-      if(pregunta) {
+      pregunta = Preguntas.findOne({ _id: new Mongo.ObjectID(id) });
+      if (pregunta) {
         respuestasHijoId = pregunta.respuestasHijo;
-        respuestasHijo=[];
-        respuestasHijoId.map((value,index) =>{
+        respuestasHijo = [];
+        respuestasHijoId.map((value, index) => {
           v = Respuestas.findOne(value)
-          if(v) {
+          if (v) {
             respuestasHijo.push(v)
           }
         });
         a.loadInterval && a.setState({
-            pregunta: pregunta.contenido,
-            respuestas: respuestasHijo
-          });
+          pregunta: pregunta.contenido,
+          respuestas: respuestasHijo
+        });
       }
     });
   }
@@ -70,11 +71,11 @@ class App extends Component {
     var a = this;
     Deps.autorun(function () {
       respuesta = Respuestas.findOne(id);
-      if(respuesta) {
-        if(respuesta.preguntasHijo[0]) {
+      if (respuesta) {
+        if (respuesta.preguntasHijo[0]) {
           a.cargarPregunta(respuesta.preguntasHijo[0]._str);
-        } else if(respuesta.resultadosHijo[0]) {
-            a.cargarResultado(respuesta.resultadosHijo[0]);
+        } else if (respuesta.resultadosHijo[0]) {
+          a.cargarResultado(respuesta.resultadosHijo[0]);
         }
       }
     });
@@ -85,7 +86,7 @@ class App extends Component {
     Deps.autorun(function () {
       resultado = Resultados.findOne(id);
       console.log(resultado);
-      if(resultado) {
+      if (resultado) {
         console.log(resultado.nombre);
         a.loadInterval && a.setState({
           resultado: {
@@ -200,11 +201,20 @@ class App extends Component {
       });
   }
 
+  toggleModoCreacion() {
+    if (this.state.modoCreacion)
+      this.setState({ modoCreacion: false });
+    else
+      this.setState({ modoCreacion: true });
+    console.log(this.state.modoCreacion);
+  }
+
+
 
   render() {
     return (
       <div>
-        <Header user={this.props.currentUser}/>
+        <Header user={this.props.currentUser} />
         <section id="preguntas" className="about section">
           {this.state.resultadoBoolean ?
             <section id="resultados" className="about section">
@@ -218,12 +228,16 @@ class App extends Component {
               </div>
               <div className="row">
                 <div id="esconder">
-                  <RespuestasComponent idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+                  <RespuestasComponent toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)} />
                 </div>
               </div>
             </div>
           }
-
+          {this.state.modoCreacion ?
+          <section id="modo-creacion" className="about section">
+              <CreacionComponent idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)}/>
+            </section> : ''
+        }
         </section>
         {this.props.currentUser ?
           <div className="row">

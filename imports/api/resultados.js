@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-export const Resultados = new Mongo.Collection('resultados');
+export const Resultados = new Mongo.Collection('resultados', {idGeneration: 'MONGO'});
 
 Resultados.schema = new SimpleSchema({
     nombre: { type: String },
@@ -27,10 +27,10 @@ Meteor.methods({
 
         // Verificacion de logeo y rol
 
-        if (!Meteor.user() || Meteor.user().rol !== 'admin') {
+        if (!Meteor.user() || Meteor.user().profile.role!=='admin') {
             throw new Meteor.Error('not-authorized');
         }
-        Resultados.insert(resultado);
+        return Resultados.insert(resultado);
     },
     'resultados.remove'(resultadoId) {
 

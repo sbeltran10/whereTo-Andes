@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-export const Historias = new Mongo.Collection('historias');
+export const Historias = new Mongo.Collection('historias', {idGeneration: 'MONGO'});
 
 Historias.schema = new SimpleSchema({
     nombre: { type: String },
@@ -28,7 +28,7 @@ Meteor.methods({
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
-        Historias.insert(historia);
+        return Historias.insert(historia);
     },
     'historias.remove'(historiaId) {
 

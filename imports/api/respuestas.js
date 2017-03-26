@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-export const Respuestas = new Mongo.Collection('respuestas');
+export const Respuestas = new Mongo.Collection('respuestas',{ idGeneration: 'MONGO' });
 
 Respuestas.schema = new SimpleSchema({
     contenido: { type: String},
     simbolo: { type: String, optional:true},
-    preguntasHijo:{ type: [Object], optional:true},
-    resultasdoHijo: { type: [Object], optional:true}
+    preguntasHijo:{ type: [SimpleSchema.RegEx.Id], optional:true},
+    resultasdoHijo: { type: [SimpleSchema.RegEx.Id], optional:true}
 });
 
 Respuestas.attachSchema(Respuestas.schema);
@@ -25,15 +25,14 @@ Meteor.methods({
     'respuestas.insert'(respuesta) {
 
         // Verificacion de logeo y rol
-        
-        if (!Meteor.user() || Meteor.user().rol!=='admin') {
+        if (!Meteor.user() || Meteor.user().profile.role!=='admin') {
             throw new Meteor.Error('not-authorized');
         }
-        Respuestas.insert(respuesta);
+        return Respuestas.insert(respuesta);
     },
     'respuestas.remove'(respuestaId) {
         
-         if (!Meteor.user() || Meteor.user().rol !== 'admin') {
+         if (!Meteor.user() || Meteor.user().profile.role !== 'admin') {
             throw new Meteor.Error('not-authorized');
         }
         Respuestas.remove(respuestaId);
