@@ -1,32 +1,30 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Historia from './historia';
+import { Historias } from '../../api/historias.js';
 
-class Historias extends Component {
-    constructor(props) {
-        super(props);
-    }
+class HistoriasComponet extends Component {
 
     render() {
-        if (this.props.historias.length) {
-            return (
-                <div>
-                    {this.props.historias.map((historia, index) => {
-                        return <Historia key={index} historia={historia} cargarHistoria={this.props.cargarHistoria.bind(this)} />
-                    })}
-                </div>
-            )
-        }
-        else {
-            return (
-                <div>
-                    <div className="mensajeHistorias">No tienes ningún registro en tu historia.</div>
-
-                </div>
-            )
-        }
-
+      historias=[];
+      var a = this;
+      Deps.autorun(function () {
+        historias = Historias.find({usuario:a.props.currentUser._id}).fetch();
+      });
+      return (
+          <div>
+            {historias.length ?
+              <div>
+                {historias.map((historia, index) => {
+                    return <Historia key={index} historia={historia} cargarHistoria={this.props.cargarHistoria.bind(this)} />
+                })}
+              </div>:
+              <div>
+                  <div className="mensajeHistorias">No tienes ningún registro en tu historia.</div>
+              </div>
+            }
+          </div>
+      );
     }
 }
 
-export default Historias;
+export default HistoriasComponet;

@@ -3,16 +3,6 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 export const Historias = new Mongo.Collection('historias');
-
-Historias.schema = new SimpleSchema({
-    nombre: { type: String },
-    fecha: { type: Date },
-    usuario: { type: String },
-    pasos: { type: [Object], optional: true }
-});
-
-Historias.attachSchema(Historias.schema);
-
 /*
 if (Meteor.isServer) {
   Meteor.publish('resultados', function resultadosPublication() {
@@ -25,13 +15,12 @@ Meteor.methods({
     'historias.insert'(historia) {
 
         // Verificacion de logeo y rol
-        if (!Meteor.user()) {
+        if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
         Historias.insert(historia);
     },
     'historias.remove'(historiaId) {
-
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
