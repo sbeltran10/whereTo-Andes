@@ -15,5 +15,6 @@ import '../imports/assets/plugins/prism/prism.js'
 import '../imports/assets/js/main.js'
 
 Meteor.startup(() => {
+  $('html').attr('lang', 'es');
   render(<App />, document.getElementById('render-target'));
 });

@@ -13,7 +13,7 @@ class Respuestas extends Component {
           {(this.props.currentUser && this.props.currentUser.profile.role == 'admin') ?
             <div className="col-md-4 boton">
               <a className="btn btn-info btn-lg" onClick={() => this.props.toggleModoCreacion()}>
-                +
+                + Añadir nueva respuesta
             </a>
             </div> : ''
           }

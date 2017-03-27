@@ -788,10 +788,10 @@ pre code {
   width:20em;
 }
 
-.list-inline li a{
+footer .text-center a{
   color:#47acf2;
 }
 
-small.copyright a{
-  color:#47acf2;
+footer small.copyright a{
+  color:#47acf2 !important;
 }
