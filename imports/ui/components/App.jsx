@@ -160,7 +160,7 @@ class App extends Component {
     }
 
     Meteor.call('historias.insert', historia);
-    alert("La historia ha sido creada de forma exitosa");
+    //alert("La historia ha sido creada de forma exitosa");
     $('html,body').animate({
       scrollTop: $("#historiales").offset().top
     },
@@ -191,8 +191,13 @@ class App extends Component {
   toggleModoCreacion() {
     if (this.state.modoCreacion)
       this.setState({ modoCreacion: false });
-    else
+    else {
       this.setState({ modoCreacion: true });
+      $('html,body').animate({
+        scrollTop: $("#dinamico").offset().top
+      },
+        'slow');
+    }
   }
 
   confirmarCreacion(respuesta) {
@@ -217,7 +222,11 @@ class App extends Component {
     this.setState({
       modoEliminacion: true,
       respuestaAEliminar: respuesta
-    })
+    });
+    $('html,body').animate({
+      scrollTop: $("#dinamico").offset().top
+    },
+      'slow');
   }
 
   eliminarRespuesta() {
@@ -240,6 +249,10 @@ class App extends Component {
       modoEliminacion: false,
       respuestaAEliminar: null
     })
+    $('html,body').animate({
+      scrollTop: $("#dinamico").offset().top
+    },
+      'slow');
 
   }
 
@@ -307,26 +320,28 @@ class App extends Component {
             </div> :
             ''
           }
-          {this.state.modoCreacion ?
-            <section id="modo-creacion" className="about section">
-              <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
-            </section> : ''
-          }
-          {this.state.modoEliminacion ?
-            <section id="eliminacion" className="about section">
-              <div className="alert alert-danger ">
-                <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
-             ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#preguntas" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#preguntas" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
+          <div id="dinamico">
+            {this.state.modoCreacion ?
+              <section id="modo-creacion" className="about section">
+                <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+              </section> : ''
+            }
+            {this.state.modoEliminacion ?
+              <section id="eliminacion" className="about section">
+                <div className="alert alert-danger ">
+                  <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
+             ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#dinamico" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#dinamico" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
         </div>
-            </section> : ''
-          }
-          {this.state.confirmacionResultado ?
-            <section id="confirmacion" className="about section">
-              <div className="alert alert-info ">
-                <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#preguntas" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
-              </div>
-            </section> : ''
-          }
+              </section> : ''
+            }
+            {this.state.confirmacionResultado ?
+              <section id="confirmacion" className="about section">
+                <div className="alert alert-info ">
+                  <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
+                </div>
+              </section> : ''
+            }
+          </div>
         </section>
         {this.props.currentUser ?
           <section id="historiales" className="about section">

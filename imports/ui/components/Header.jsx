@@ -31,7 +31,6 @@ class Header extends Component {
                 <h2 className="title">Where<span className="highlight">-To</span></h2>
                 <p className="intro">Conoce los lugares, espacios o personas en la universidad que te pueden ayudar. Hazlo respondiendo unas sencillas preguntas</p>
                 <div className="btns">
-                    <a className="btn btn-cta-secondary" href="#registrate">Registrate</a>
                     <a className="btn btn-cta-primary" href="#preguntas">Ir a las preguntas</a>
                 </div>
                 <br/>
