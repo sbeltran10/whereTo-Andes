@@ -44,7 +44,7 @@ class Resultado extends Component {
             <div className="row">
               <div className="col-md-12">
                 <h2 className="title text-center">{this.props.resultado.nombre}</h2>
-                <img className="center" src={this.props.resultado.imagen} width="200px" height="100px" alt="Logo o ubicacion del lugar resultado" />
+                <img className="center" src={this.props.resultado.imagen} width="400px" height="200px" alt="Logo o ubicacion del lugar resultado" />
               </div>
             </div>
             <div className="row pad">
@@ -55,12 +55,15 @@ class Resultado extends Component {
             <br />
             {this.props.currentUser ?
               <div className="row pad">
-                <p> Puedes guardar el resultado y todo el camino hacia el como una historia para consultar despues: </p>
-                <form id="userRegisterForm" onSubmit={this.handleSubmit}>
-                  <label>Nombre</label>
-                  <input type="text" value={this.state.nombre} onChange={this.handleInputChange} name="nombre" className="form-control" placeholder="Nombre de la historia" required />
-                  <button type="submit" className="btn btn-cta-primary">Guardar Resultado</button>
-                </form>
+                <div className="col-md-6">
+                  <p> Puedes guardar el resultado y todo el camino hacia el, cómo una historia, para consultar despues: </p>
+                  <form id="userRegisterForm" onSubmit={this.handleSubmit}>
+                    <label>Nombre</label>
+                    <input type="text" value={this.state.nombre} onChange={this.handleInputChange} name="nombre" className="form-control" placeholder="Nombre de la historia" required />
+                    <br/>
+                    <button type="submit" className="btn btn-cta-primary">Guardar Resultado</button>
+                  </form>
+                </div>
               </div>: ''
             }
           </div>
