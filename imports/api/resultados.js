@@ -34,7 +34,7 @@ Meteor.methods({
     },
     'resultados.remove'(resultadoId) {
 
-        if (!Meteor.user() || Meteor.user().rol !== 'admin') {
+       if (!Meteor.user() || Meteor.user().profile.role!=='admin') {
             throw new Meteor.Error('not-authorized');
         }
         Resultados.remove(resultadoId);

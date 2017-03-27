@@ -776,7 +776,7 @@ pre code {
 }
 
 .btn-info{
-  width:20em;
+  width:25em;
   background:#0f88dd !important;
 }
 
@@ -785,7 +785,7 @@ pre code {
 }
 
 .btn-cta-secondary{
-  width:20em;
+  width:25em;
 }
 
 footer .text-center a{
@@ -794,4 +794,58 @@ footer .text-center a{
 
 footer small.copyright a{
   color:#47acf2 !important;
+}
+
+.agregar-respuesta .btn-info{
+  width:25em;
+  border: 1px solid #0CAD4E;
+  background:#0CAD4E !important;
+}
+
+.agregar-respuesta .btn-info:hover {
+  border: 1px solid #09853C;
+  background-color: #09853C !important;
+}
+
+.creacion-datos-respuesta{
+  border: 0.2em solid #09853C;
+  border-radius: 1em;
+}
+
+.btn-cancelar{
+  width: 2.5em;
+  border: 1px solid #B20C0C !important;
+  background:#B20C0C !important;
+}
+
+.btn-cancelar:hover{
+  width:  2.5em;
+  border: 1px solid #9A0A0A !important;
+  background:#9A0A0A !important;
+}
+
+.boton-modo-admin{
+  width: 22.5em;
+}
+
+.btn-disabled{
+  pointer-events: none;
+  border: 1px solid #7b7b7b !important;
+  background:#7b7b7b !important;
+}
+
+.btn-disabled:hover{
+  pointer-events: none;
+  border: 1px solid #7b7b7b !important;
+  background:#7b7b7b !important;
+}
+
+.agregar-respuesta .btn-cancelar-creacion{
+  border: 1px solid #B20C0C !important;
+  background:#B20C0C !important;
+}
+
+.agregar-respuesta .btn-cancelar-creacion:hover{
+  border: 1px solid #9A0A0A !important;
+  background:#9A0A0A !important;
 }

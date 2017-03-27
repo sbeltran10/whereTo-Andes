@@ -35,7 +35,7 @@ Meteor.methods({
          if (!Meteor.user() || Meteor.user().profile.role !== 'admin') {
             throw new Meteor.Error('not-authorized');
         }
-        Respuestas.remove(respuestaId);
+        return Respuestas.remove(respuestaId);
     },
 
 });

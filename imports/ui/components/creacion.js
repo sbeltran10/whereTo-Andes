@@ -22,6 +22,19 @@ class Creacion extends Component {
 		console.log(this.props.idPregunta);
 	}
 
+	limpiarCampos(){
+		this.setState({
+			nombreRespuesta: '',
+			hijo: 'pregunta',
+			preguntaHijoContenido: '',
+			resultadoHijoNombre: '',
+			resultadoHijoUbicacion: '',
+			resultadoHijoImagen: '',
+			resultadoHijoComoLlegar: '',
+			resultadoHijoHorario: ''
+		})
+	}
+
 	handleInputChange(event) {
 		this.setState({
 			[event.target.name]: event.target.value
@@ -30,7 +43,7 @@ class Creacion extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		console.log(this.state.hijo);
+		console.log(event);
 		var descripcionRespuesta = this.state.nombreRespuesta;
 		var idPregunta = this.props.idPregunta;
 		if (this.state.hijo === 'pregunta') {
@@ -95,11 +108,13 @@ class Creacion extends Component {
 			});
 
 		}
+		this.props.confirmarCreacion(this.state.nombreRespuesta);
+		this.limpiarCampos();
 	}
 
 	render() {
 		return (
-			<div>
+			<div className="creacion-datos-respuesta">
 				<form id="respuestaRegisterForm" onSubmit={this.handleSubmit}>
 					<div className="modal-header">
 						<h4 className="modal-title">Crea una nueva respuesta</h4>
@@ -131,8 +146,11 @@ class Creacion extends Component {
 							</div>
 						}
 					</div>
-					<div className="modal-footer">
-						<button type="submit" className="btn btn-default btn-outline">Crear respuesta</button>
+					<div className="modal-footer agregar-respuesta">
+						<button type="submit" href="#preguntas" className="btn btn-info btn-lg"><b>Crear respuesta</b></button>
+						<a className="btn btn-info btn-lg btn-cancelar-creacion" href="#preguntas" onClick={() => this.props.cancelarCreacion()}>
+                Cancelar
+            </a>
 					</div>
 				</form>
 			</div>

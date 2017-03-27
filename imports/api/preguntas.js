@@ -39,10 +39,18 @@ Meteor.methods({
     },
     'preguntas.remove'(preguntaId) {
 
-         if (!Meteor.user() || Meteor.user().rol !== 'admin') {
+         if (!Meteor.user() || Meteor.user().profile.role!=='admin') {
             throw new Meteor.Error('not-authorized');
         }
         Preguntas.remove(preguntaId);
     },
+    'preguntas.removeHijo'(respuestaId){
+        console.log(respuestaId);
+        if (!Meteor.user() || Meteor.user().profile.role!=='admin') {
+            throw new Meteor.Error('not-authorized');
+        }
+                console.log(respuestaId);
+        return Preguntas.update({}, {"$pull": { "respuestasHijo":respuestaId}});
+    }
 
 });
