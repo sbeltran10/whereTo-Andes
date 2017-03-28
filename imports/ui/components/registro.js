@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+
+/**Podrian quitar este import de axios para que no salga warning en el despliegue*/
+/**import axios from 'axios';*/
 
 class Registro extends Component {
 
@@ -23,7 +25,7 @@ class Registro extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    axios.post(this.props.url + "/usuarios", this.state).then( response => {
+    /**axios.post(this.props.url + "/usuarios", this.state).then( response => {
         alert("Tu cuenta se ha creado de forma exitosa");
         $('html,body').animate({
         scrollTop: $("#login").offset().top},
@@ -35,7 +37,7 @@ class Registro extends Component {
         });
         this.props.cambiarEstadoLogueado(response.data._id);
         $('#registrate').hide();
-    })
+    })*/
   }
 
   render() {

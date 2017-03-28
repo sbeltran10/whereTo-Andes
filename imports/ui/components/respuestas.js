@@ -10,7 +10,9 @@ class Respuestas extends Component {
           {this.props.respuestas.map((respuesta, index) => {
             return <Respuesta prepararRespuestaAEliminar={this.props.prepararRespuestaAEliminar.bind(this)} currentUser={this.props.currentUser} respuestaAEliminar={this.props.respuestaAEliminar} key={index} respuesta={respuesta} idPregunta={this.props.idPregunta} pregunta={this.props.pregunta} cargarRespuesta={this.props.cargarRespuesta.bind(this)} />
           })}
-          {(this.props.currentUser && this.props.currentUser.profile.role == 'admin') ?
+
+          {/* chevere que tengan roles. Pueden poner aqui triple = para comparar strings*/}
+            {(this.props.currentUser && this.props.currentUser.profile.role == 'admin') ?
             <div className="col-md-4 boton agregar-respuesta">
               <a className="btn btn-info btn-lg" onClick={() => this.props.toggleModoCreacion()}>
                 + Añadir nueva respuesta

@@ -4,6 +4,8 @@ import { check } from 'meteor/check';
 
 export const Historias = new Mongo.Collection('historias', {idGeneration: 'MONGO'});
 
+/** Muy buena seguridad para las bases de datos.*/
+
 Historias.schema = new SimpleSchema({
     nombre: { type: String },
     fecha: { type: Date },

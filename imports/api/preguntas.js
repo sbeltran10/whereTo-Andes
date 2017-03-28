@@ -1,8 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+
+/**
+creo que este check no lo usan
+*/
 import { check } from 'meteor/check';
 
 export const Preguntas = new Mongo.Collection('preguntas', {idGeneration: 'MONGO'});
+
+/**
+Me parece muy chevere que tengan schema
+*/
 
 Preguntas.schema = new SimpleSchema({
     contenido: { type: String },

@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
-import { Meteor } from 'meteor/meteor';
+
+/**Podrian quitar este import de axios para que no salga warning en el despliegue*/
+/*import axios from 'axios';*/
+
+import { Meteor } from 'meteor/meteor' ;
 import { Preguntas } from '../../api/preguntas.js';
 import { Respuestas } from '../../api/respuestas.js';
 import { Resultados } from '../../api/resultados.js';
@@ -53,6 +56,8 @@ class App extends Component {
   }
 
   cargarPregunta(id) {
+    /*Les recomiendo usar let en estos casos porque una vez
+      me paso con promesas que var a veces no tiene comportamiento esperado**/
     var a = this;
     Deps.autorun(function () {
       pregunta = Preguntas.findOne({ _id: new Mongo.ObjectID(id) });
