@@ -8,12 +8,16 @@ class Respuesta extends Component {
         <div className="col-md-4 boton">
           {(this.props.currentUser && this.props.currentUser.profile.role == 'admin') ?
             <div>
-              <a className="btn btn-info btn-lg boton-modo-admin" onClick={() => this.props.cargarRespuesta(this.props.respuesta._id, this.props.pregunta, this.props.idPregunta)}>
-                {this.props.respuesta.contenido}
-              </a>
-              <a className="btn btn-info btn-lg btn-cancelar" href="#eliminacion" aria-label="Eliminar respuesta" onClick={() => this.props.prepararRespuestaAEliminar(this.props.respuesta)}>
-                X
-            </a>
+              <div className="col-md-10">
+                <a className="btn btn-info btn-lg boton-modo-admin" onClick={() => this.props.cargarRespuesta(this.props.respuesta._id, this.props.pregunta, this.props.idPregunta)}>
+                  {this.props.respuesta.contenido}
+                </a>
+              </div>
+              <div className="col-md-1">
+                <a className="btn btn-info btn-lg btn-cancelar" href="#eliminacion" aria-label="Eliminar respuesta" onClick={() => this.props.prepararRespuestaAEliminar(this.props.respuesta)}>
+                  X
+                </a>
+              </div>
             </div> :
             <a className="btn btn-info btn-lg"  onClick={() => this.props.cargarRespuesta(this.props.respuesta._id, this.props.pregunta, this.props.idPregunta)}>
               {this.props.respuesta.contenido}

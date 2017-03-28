@@ -776,7 +776,7 @@ pre code {
 }
 
 .btn-info{
-  width:25em;
+  width:100%;
   background:#0f88dd !important;
 }
 
@@ -797,7 +797,7 @@ footer small.copyright a{
 }
 
 .agregar-respuesta .btn-info{
-  width:25em;
+  width:100%;
   border: 1px solid #0CAD4E;
   background:#0CAD4E !important;
 }
@@ -825,7 +825,7 @@ footer small.copyright a{
 }
 
 .boton-modo-admin{
-  width: 22.5em;
+  width: 100%;
 }
 
 .btn-disabled{
