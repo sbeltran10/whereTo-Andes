@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+//Axios no esta en el package.json
 import axios from 'axios';
 
 class Registro extends Component {

@@ -1,3 +1,4 @@
+//Muy bueno que hayan creado archivos independeintes para la gestion de las diferentes colecciones
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';

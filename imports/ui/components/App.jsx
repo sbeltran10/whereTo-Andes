@@ -354,6 +354,7 @@ class App extends Component {
           </div>: ''
         }
         <footer className="footer">
+          {/* <!--Me parece bueno el que ponga enlaces a sus páginas--> */}
           <div className="text-center">
                   <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
                   Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br/>
@@ -376,4 +377,3 @@ export default createContainer(() => {
 
 
 T9n.setLanguage('es');
-
