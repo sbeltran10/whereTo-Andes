@@ -9,7 +9,6 @@ import { Historias } from '../../api/historias.js';
 import RespuestasComponent from './respuestas';
 import ResultadoComponent from './resultado';
 import CreacionComponent from './creacion';
-import Registro from './registro';
 import HistoriasComponet from './historias';
 import Header from './Header.jsx'
 
@@ -375,4 +374,3 @@ export default createContainer(() => {
 
 
 T9n.setLanguage('es');
-
