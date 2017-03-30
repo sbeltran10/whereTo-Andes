@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import { Meteor } from 'meteor/meteor';
 import { Preguntas } from '../../api/preguntas.js';
 import { Respuestas } from '../../api/respuestas.js';
@@ -10,7 +9,6 @@ import { Historias } from '../../api/historias.js';
 import RespuestasComponent from './respuestas';
 import ResultadoComponent from './resultado';
 import CreacionComponent from './creacion';
-import Registro from './registro';
 import HistoriasComponet from './historias';
 import Header from './Header.jsx'
 
