@@ -24,7 +24,7 @@ import '../imports/assets/js/main.js'
 
 //Mientras veia las preguntas para algunos tipos
 //de problemas o dudas que no tiene como tal preguntas no hace el cambio de quitar los tipos de preguntas
-//por lo que se genera un error
+//por lo que se puede llegar a genera un error
 //( Uncaught TypeError: Cannot read property 'contenido' of undefined
 // at App.cargarRespuesta  App.jsx 89)
 //si se vuelve a seleccionar algun elemento de dicha lista
