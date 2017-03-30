@@ -13,6 +13,7 @@ import HistoriasComponet from './historias';
 import Header from './Header.jsx'
 
 const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
+//Pueden hacer uso de react router o flow router para manejar las vistas y tomar los id's de lo que el usuario le haga click.
 
 // App component - represents the whole app
 class App extends Component {
