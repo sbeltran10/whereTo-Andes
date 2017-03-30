@@ -373,7 +373,3 @@ export default createContainer(() => {
     currentUser: Meteor.user(),
   };
 }, App);
-
-
-T9n.setLanguage('es');
-
