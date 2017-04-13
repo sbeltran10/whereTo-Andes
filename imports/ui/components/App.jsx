@@ -286,76 +286,83 @@ class App extends Component {
       <div>
         <Header />
         <div className="row">
-        <section id="preguntas" className="about section">
-          {this.state.resultadoBoolean ?
-            <section id="resultados" className="about section">
-              <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)} />
-            </section> :
-            <div>
-                <div className="col-md-12">
-                  <h2 className="title text-center">{this.state.pregunta}</h2>
+          <section id="preguntas" className="about section">
+            {this.state.resultadoBoolean ?
+              <section id="resultados" className="about section">
+                <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)} />
+              </section> :
+              <div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <h2 className="title text-center">{this.state.pregunta}</h2>
+                  </div>
                 </div>
-                <div id="esconder">
-                  <RespuestasComponent respuestaAEliminar={this.state.respuestaAEliminar} toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)}
-                    prepararRespuestaAEliminar={this.prepararRespuestaAEliminar.bind(this)} />
+                <div className="row">
+                  <div id="esconder">
+                    <RespuestasComponent respuestaAEliminar={this.state.respuestaAEliminar} toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)}
+                      prepararRespuestaAEliminar={this.prepararRespuestaAEliminar.bind(this)} />
+                  </div>
                 </div>
-            </div>
-          }
-          {this.state.contador > 1 ?
-            <div className="row">
-              <br />
-              <br />
-              <div className="col-md-1">
               </div>
-              <div className="col-md-3">
-                <form id="userRegisterForm" onSubmit={this.handleSubmit}>
-                  <button type="submit" className="btn btn-cta-primary">Volver a pregunta anterior</button>
-                </form>
-              </div>
-            </div> :
-            ''
-          }
-          <div id="dinamico">
-            {this.state.modoCreacion ?
-              <section id="modo-creacion" className="about section">
-                <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
-              </section> : ''
+
             }
-            {this.state.modoEliminacion ?
-              <section id="eliminacion" className="about section">
-                <div className="alert alert-danger ">
-                  <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
+            {this.state.contador > 1 ?
+              <div className="row">
+                <br />
+                <br />
+                <div className="col-md-1">
+                </div>
+                <div className="col-md-3">
+                  <form id="userRegisterForm" onSubmit={this.handleSubmit}>
+                    <button type="submit" className="btn btn-cta-primary">Volver a pregunta anterior</button>
+                  </form>
+                </div>
+              </div> :
+              ''
+            }
+            <div className="row centerContent">
+              <div id="dinamico">
+                {this.state.modoCreacion ?
+                  <section id="modo-creacion" className="about section">
+                    <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+                  </section> : ''
+                }
+                {this.state.modoEliminacion ?
+                  <section id="eliminacion" className="about section">
+                    <div className="alert alert-danger ">
+                      <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
              ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#dinamico" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#dinamico" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
         </div>
-              </section> : ''
-            }
-            {this.state.confirmacionResultado ?
-              <section id="confirmacion" className="about section">
-                <div className="alert alert-info ">
-                  <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
-                </div>
-              </section> : ''
-            }
-          </div>
-        </section>
+                  </section> : ''
+                }
+                {this.state.confirmacionResultado ?
+                  <section id="confirmacion" className="about section">
+                    <div className="alert alert-info ">
+                      <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
+                    </div>
+                  </section> : ''
+                }
+              </div>
+            </div>
+          </section>
         </div>
         {this.props.currentUser ?
           <div className="row">
             <section id="historiales" className="about section">
-                <div className="col-md-12">
-                  <h2 className="title text-center">Historiales</h2>
-                </div>
-                <div className="col-md-12">
-                  <HistoriasComponet currentUser={this.props.currentUser} cargarHistoria={this.cargarHistoria.bind(this)} />
-                </div>
+              <div className="col-md-12">
+                <h2 className="title text-center">Historiales</h2>
+              </div>
+              <div className="col-md-12">
+                <HistoriasComponet currentUser={this.props.currentUser} cargarHistoria={this.cargarHistoria.bind(this)} />
+              </div>
             </section>
-          </div>: ''
+          </div> : ''
         }
         <footer className="footer">
           <div className="text-center">
-                  <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
-                  Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br/>
-                <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+            <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
+            Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br />
+            <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
           </div>
         </footer>
       </div>
