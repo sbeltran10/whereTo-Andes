@@ -174,13 +174,6 @@ a.btn-cta-primary,
   font-weight: 600;
   text-transform: uppercase;
 }
-a.btn-cta-primary:hover,
-.btn-cta-primary:hover {
-  background: #042a36;
-  border: 1px solid #042a36;
-  width:20em;
-  color: #fff;
-}
 a.btn-cta-secondary,
 .btn-cta-secondary {
   background: #eebf3f;
@@ -854,6 +847,24 @@ footer small.copyright a{
   background:#053d4e !important;
 }
 
+.nuevo {
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  font-family: 'Montserrat', arial, sans-serif;
+  padding: 8px 16px;
+  font-weight: bold;
+  border: 1px solid #ecb728;
+  color: #fff;
+  display: inline-block;
+  border-radius: 4px;
+  margin-right: 15px;
+  font-size: 18px;
+  padding: 8px 30px;
+  background: #ecb728 !important;
+}
+
 .centerContent {
   width: 100%;
   text-align: center;
@@ -873,4 +884,3 @@ footer small.copyright a{
   float: right;
   margin:1%
 }
-
