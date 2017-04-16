@@ -769,7 +769,7 @@ pre code {
 }
 
 .btn-info{
-  width:100%;
+  width:80%;
   background:#0f88dd !important;
 }
 
@@ -790,7 +790,7 @@ footer small.copyright a{
 }
 
 .agregar-respuesta .btn-info{
-  width:100%;
+  width:80%;
   border: 1px solid #0CAD4E;
   background:#0CAD4E !important;
 }
@@ -818,7 +818,7 @@ footer small.copyright a{
 }
 
 .boton-modo-admin{
-  width: 100%;
+  width: 80%;
 }
 
 .btn-disabled{
@@ -847,6 +847,7 @@ footer small.copyright a{
   background:#053d4e !important;
 }
 
+<<<<<<< HEAD
 .nuevo {
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
@@ -863,4 +864,24 @@ footer small.copyright a{
   font-size: 18px;
   padding: 8px 30px;
   background: #ecb728 !important;
+}
+
+.centerContent {
+  width: 100%;
+  text-align: center;
+}
+
+#dinamico{
+  width: 90%;
+  display: inline-block
+}
+
+#dinamico * {
+  text-align: left;
+}
+
+.agregar-respuesta .botones-creacion, .agregar-respuesta .botones-creacion:hover{
+  width: 20%;
+  float: right;
+  margin:1%
 }

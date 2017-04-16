@@ -376,9 +376,9 @@ class App extends Component {
         }
         <footer className="footer">
           <div className="text-center">
-                  <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
-                  Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br/>
-                <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+            <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
+            Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br />
+            <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
           </div>
         </footer>
       </div>
