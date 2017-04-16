@@ -13,7 +13,6 @@ import HistoriasComponet from './historias';
 import Header from './Header.jsx'
 
 const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
-
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
@@ -52,7 +51,8 @@ class App extends Component {
 
   cargarPregunta(id) {
     var a = this;
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
+
       pregunta = Preguntas.findOne({ _id: new Mongo.ObjectID(id) });
       if (pregunta) {
         respuestasHijoId = pregunta.respuestasHijo;
@@ -90,7 +90,7 @@ class App extends Component {
       pasos: pasos,
       contador: this.state.contador + 1
     });
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
       respuesta = Respuestas.findOne(id);
       if (respuesta) {
         if (respuesta.preguntasHijo[0]) {
@@ -106,9 +106,10 @@ class App extends Component {
     var a = this;
     var pasos = this.state.pasos;
     pasos.push({
-      pregunta: { _id: id }
+      pregunta: { _id: id },
+      respuesta: { _id: id }
     });
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
       resultado = Resultados.findOne(id);
       if (resultado) {
         a.loadInterval && a.setState({
@@ -156,7 +157,6 @@ class App extends Component {
       pasos: this.state.pasos,
       usuario: this.props.currentUser._id
     }
-
     Meteor.call('historias.insert', historia);
     //alert("La historia ha sido creada de forma exitosa");
     $('html,body').animate({
@@ -167,7 +167,7 @@ class App extends Component {
 
   cargarHistoria(id) {
     var a = this;
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
       historia = Historias.findOne(id);
       if (historia) {
         console.log(historia.pasos.length - 1);
@@ -237,7 +237,7 @@ class App extends Component {
           if (error) {
             console.log(error);
           } else {
-
+            console.log(result);
           }
         });
       }
@@ -360,7 +360,7 @@ class App extends Component {
         }
         <footer className="footer">
           <div className="text-center">
-            <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
+            <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub </a>
             Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br />
             <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
           </div>
@@ -378,3 +378,8 @@ export default createContainer(() => {
     currentUser: Meteor.user(),
   };
 }, App);
+
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');
+Meteor.subscribe('historias');

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Historias } from '../../api/historias.js';
+import { Meteor } from 'meteor/meteor';
 
 class Resultado extends Component {
 

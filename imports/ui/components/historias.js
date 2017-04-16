@@ -7,7 +7,7 @@ class HistoriasComponet extends Component {
     render() {
       historias=[];
       var a = this;
-      Deps.autorun(function () {
+      Tracker.autorun(function () {
         historias = Historias.find({usuario:a.props.currentUser._id}).fetch();
       });
       return (
@@ -28,3 +28,5 @@ class HistoriasComponet extends Component {
 }
 
 export default HistoriasComponet;
+
+Meteor.subscribe('historias');
