@@ -38,7 +38,6 @@ class App extends Component {
 
     }
     this.cargarPregunta(PREGUNTA_INICIO);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -70,7 +69,7 @@ class App extends Component {
         });
       }
     });
-    this.setState({
+    this.loadInterval &&this.setState({
       respuestaAEliminar: null,
       modoEliminacion: false
     })
@@ -78,21 +77,21 @@ class App extends Component {
 
   cargarRespuesta(id, pregunta, idPregunta) {
     var a = this;
-    var pasos = this.state.pasos;
-    pasos.push({
-      pregunta: { _id: idPregunta },
-      respuesta: { _id: id }
-    });
-    this.loadInterval && this.setState({
-      pregunta: pregunta.contenido,
-      respuestas: respuestasHijo,
-      atras: true,
-      pasos: pasos,
-      contador: this.state.contador + 1
-    });
     Deps.autorun(function () {
       respuesta = Respuestas.findOne(id);
       if (respuesta) {
+        var pasos = a.state.pasos;
+        pasos.push({
+          pregunta: { _id: idPregunta },
+          respuesta: { _id: id }
+        });
+        a.loadInterval && a.setState({
+          pregunta: pregunta.contenido,
+          respuestas: respuestasHijo,
+          atras: true,
+          pasos: pasos,
+          contador: a.state.contador + 1
+        });
         if (respuesta.preguntasHijo[0]) {
           a.cargarPregunta(respuesta.preguntasHijo[0]._str);
         } else if (respuesta.resultadosHijo[0]) {
@@ -266,7 +265,7 @@ class App extends Component {
     })
   }
 
-  handleSubmit(event) {
+  volverAnterior(event) {
     event.preventDefault();
     pasoAnterior = this.state.pasos.pop();
     if (this.state.resultadoBoolean) {
@@ -281,74 +280,98 @@ class App extends Component {
     this.cargarPregunta(pasoAnterior.pregunta._id._str);
   }
 
+  volverInicial(event) {
+    event.preventDefault();
+
+    this.setState({
+      contador: 1,
+      resultadoBoolean: false,
+      pasos: []
+    });
+    this.cargarPregunta(PREGUNTA_INICIO);
+  }
+
   render() {
     return (
       <div>
         <Header />
-        <div className="row">
-        <section id="preguntas" className="about section">
-          {this.state.resultadoBoolean ?
-            <section id="resultados" className="about section">
-              <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)} />
-            </section> :
-            <div>
-                <div className="col-md-12">
-                  <h2 className="title text-center">{this.state.pregunta}</h2>
+        <div className="container-fluid">
+          <div className="row">
+            <section id="preguntas" className="about section">
+              {this.state.resultadoBoolean ?
+                <section id="resultados" className="about section">
+                  <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)} />
+                </section> :
+                <div>
+                    <div className="col-md-12">
+                      <h2 className="title text-center">{this.state.pregunta}</h2>
+                    </div>
+                    <div className="container-fluid">
+                      <div className="row">
+                        <div id="esconder">
+                          <RespuestasComponent respuestaAEliminar={this.state.respuestaAEliminar} toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)}
+                            prepararRespuestaAEliminar={this.prepararRespuestaAEliminar.bind(this)} />
+                        </div>
+                      </div>
+                    </div>
                 </div>
-                <div id="esconder">
-                  <RespuestasComponent respuestaAEliminar={this.state.respuestaAEliminar} toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)}
-                    prepararRespuestaAEliminar={this.prepararRespuestaAEliminar.bind(this)} />
+              }
+              {this.state.contador > 1 ?
+                <div className="container-fluid">
+                  <div className="row">
+                    <br />
+                    <br />
+                    <div className="col-md-1">
+                    </div>
+                    <div className="col-md-3">
+                        <a id="volverAPregunta" onClick={this.volverAnterior.bind(this)} className="btn btn-cta-primary">Volver a pregunta anterior</a>
+                    </div>
+                    {this.state.contador > 2 ?
+                      <div className="col-md-3">
+                          <a id="volverAPreguntaI" onClick={this.volverInicial.bind(this)} className="btn btn-cta-primary">Volver a pregunta inicial</a>
+                      </div>
+                    :''}
+                  </div>
                 </div>
-            </div>
-          }
-          {this.state.contador > 1 ?
-            <div className="row">
-              <br />
-              <br />
-              <div className="col-md-1">
+                :''
+              }
+              <div id="dinamico">
+                {this.state.modoCreacion ?
+                  <section id="modo-creacion" className="about section">
+                    <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+                  </section> : ''
+                }
+                {this.state.modoEliminacion ?
+                  <section id="eliminacion" className="about section">
+                    <div className="alert alert-danger ">
+                      <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
+                      ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#dinamico" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#dinamico" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
+                    </div>
+                  </section> : ''
+                }
+                {this.state.confirmacionResultado ?
+                  <section id="confirmacion" className="about section">
+                    <div className="alert alert-info ">
+                      <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
+                    </div>
+                  </section> : ''
+                }
               </div>
-              <div className="col-md-3">
-                <form id="userRegisterForm" onSubmit={this.handleSubmit}>
-                  <button type="submit" className="btn btn-cta-primary">Volver a pregunta anterior</button>
-                </form>
-              </div>
-            </div> :
-            ''
-          }
-          <div id="dinamico">
-            {this.state.modoCreacion ?
-              <section id="modo-creacion" className="about section">
-                <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
-              </section> : ''
-            }
-            {this.state.modoEliminacion ?
-              <section id="eliminacion" className="about section">
-                <div className="alert alert-danger ">
-                  <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
-             ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#dinamico" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#dinamico" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
-        </div>
-              </section> : ''
-            }
-            {this.state.confirmacionResultado ?
-              <section id="confirmacion" className="about section">
-                <div className="alert alert-info ">
-                  <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
-                </div>
-              </section> : ''
-            }
+            </section>
           </div>
-        </section>
         </div>
         {this.props.currentUser ?
-          <div className="row">
-            <section id="historiales" className="about section">
-                <div className="col-md-12">
-                  <h2 className="title text-center">Historiales</h2>
-                </div>
-                <div className="col-md-12">
-                  <HistoriasComponet currentUser={this.props.currentUser} cargarHistoria={this.cargarHistoria.bind(this)} />
-                </div>
-            </section>
+          <div className="container-fluid">
+            <div className="row">
+              <section id="historiales" className="about section">
+                  <div className="col-md-12">
+                    <h2 className="title text-center">Historiales</h2>
+                  </div>
+                  <div className="col-md-12">
+                    <HistoriasComponet currentUser={this.props.currentUser} cargarHistoria={this.cargarHistoria.bind(this)} />
+                  </div>
+              </section>
+            </div>
           </div>: ''
         }
         <footer className="footer">

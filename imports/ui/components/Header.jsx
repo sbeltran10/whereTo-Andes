@@ -15,7 +15,6 @@ class Header extends Component {
                 </h1>
                 <br/>
                 <br/>
-                <AccountsUIWrapper/>
                 <span className="text">
                   <strong>
                     { this.props.user ?
@@ -32,6 +31,7 @@ class Header extends Component {
                 <p className="intro">Conoce los lugares, espacios o personas en la universidad que te pueden ayudar. Hazlo respondiendo unas sencillas preguntas</p>
                 <div className="btns">
                     <a className="btn btn-cta-primary" href="#preguntas">Ir a las preguntas</a>
+                    <a className="nuevo"><AccountsUIWrapper/></a>
                 </div>
                 <br/>
                 <p className="intro"> Si te registras podras guardar todas las busquedas que hagas, pero aunque no te registres podras disfrutar de los demás servicios</p>
