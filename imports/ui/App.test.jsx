@@ -43,6 +43,7 @@ if (Meteor.isClient) {
             it('existen todas las respuestas', () => {
                 assert.equal(Respuestas.find().count(), 3);
             });
+            /*
             it('renders the correct list when routed to', () => {
                 const list = Lists.findOne();
                 FlowRouter.go('Lists.show', { _id: list._id });
@@ -53,6 +54,7 @@ if (Meteor.isClient) {
                         assert.equal(Todos.find({ listId: list._id }).count(), 3);
                     });
             });
+            */
         });
     });
 }
