@@ -75,3 +75,7 @@ class Resultado extends Component {
 }
 
 export default Resultado;
+
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');

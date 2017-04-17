@@ -23,8 +23,7 @@ if (Meteor.isServer) {
                 fecha: 1,
                 usuario: 1,
                 pasos: 1
-            },
-            limit : 15
+            }
         });
     });
 }
