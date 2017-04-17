@@ -23,3 +23,5 @@ react-meteor-data
 accounts-ui
 accounts-password
 softwarerero:accounts-t9n
+practicalmeteor:mocha
+dburles:factory
