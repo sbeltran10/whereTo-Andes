@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { Preguntas } from './preguntas.js';
+import { assert } from 'meteor/practicalmeteor:chai';
 
 if (Meteor.isServer) {
     describe('Preguntas', () => {
