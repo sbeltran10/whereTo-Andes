@@ -13,7 +13,7 @@ class HistoriasComponet extends Component {
       return (
           <div>
             {historias.length ?
-              <div>
+              <div className="historias">
                 {historias.map((historia, index) => {
                     return <Historia key={index} historia={historia} cargarHistoria={this.props.cargarHistoria.bind(this)} />
                 })}
@@ -29,7 +29,7 @@ class HistoriasComponet extends Component {
 
 export default HistoriasComponet;
 
-Meteor.subscribe('historias');
+/*Meteor.subscribe('historias');
 Meteor.subscribe('respuestas');
 Meteor.subscribe('preguntas');
-Meteor.subscribe('resultados');
+Meteor.subscribe('resultados');*/
