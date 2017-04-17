@@ -19,8 +19,7 @@ if (Meteor.isServer) {
             fields: {
                 contenido: 1,
                 respuestasHijo: 1
-            },
-            limit : 15
+            }
         });
     });
 }

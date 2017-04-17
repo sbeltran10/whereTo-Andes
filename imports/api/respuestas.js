@@ -23,8 +23,7 @@ if (Meteor.isServer) {
                 simbolo: 1,
                 preguntasHijo: 1,
                 resultadosHijo: 1
-            },
-            limit : 15
+            }
         });
     });
 }

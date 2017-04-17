@@ -29,3 +29,7 @@ class Respuestas extends Component {
   }
 }
 export default Respuestas;
+
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');

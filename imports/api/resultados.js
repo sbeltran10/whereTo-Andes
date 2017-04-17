@@ -25,8 +25,7 @@ if (Meteor.isServer) {
                 imagen: 1,
                 comoLlegar: 1,
                 horario: 1
-            },
-            limit: 15
+            }
         });
     });
 }

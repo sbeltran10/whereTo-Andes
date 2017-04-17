@@ -42,3 +42,7 @@ class Respuesta extends Component {
 }
 
 export default Respuesta;
+
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');

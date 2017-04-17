@@ -30,3 +30,6 @@ class HistoriasComponet extends Component {
 export default HistoriasComponet;
 
 Meteor.subscribe('historias');
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');
