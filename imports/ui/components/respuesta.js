@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 class Respuesta extends Component {
 
@@ -43,6 +44,8 @@ class Respuesta extends Component {
 
 export default Respuesta;
 
+/*
 Meteor.subscribe('respuestas');
 Meteor.subscribe('preguntas');
 Meteor.subscribe('resultados');
+*/

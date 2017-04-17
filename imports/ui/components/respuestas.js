@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Respuesta from './respuesta';
+import { Meteor } from 'meteor/meteor';
 
 class Respuestas extends Component {
 
@@ -30,6 +31,4 @@ class Respuestas extends Component {
 }
 export default Respuestas;
 
-Meteor.subscribe('respuestas');
-Meteor.subscribe('preguntas');
-Meteor.subscribe('resultados');
+//Meteor.subscribe('respuestas');
