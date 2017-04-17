@@ -3,7 +3,6 @@ import { Random } from 'meteor/random';
 import { Preguntas } from './preguntas.js';
 import { Factory } from 'meteor/dburles:factory';
 import { assert } from 'meteor/practicalmeteor:chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 if (Meteor.isServer) {
     describe('Preguntas', function () {
@@ -13,7 +12,7 @@ if (Meteor.isServer) {
             let userId;
 
             beforeEach(function () {
-                resetDatabase();
+                Preguntas.remove({});
                 preguntaId = Preguntas.insert({
                     contenido: "pregunta test 1",
                     respuestasHijo: []
