@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Respuesta from './respuesta';
+import { Meteor } from 'meteor/meteor';
 
 class Respuestas extends Component {
 
