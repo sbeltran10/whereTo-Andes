@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { DDP } from 'meteor/ddp-client';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { Promise } from 'meteor/promise';
 import { generarDatos } from '../api/generar-datos.test.js';
@@ -28,21 +27,20 @@ if (Meteor.isClient) {
         //   Then, route the app to the homepage
         beforeEach(function () {
             Meteor.call('generarDatos', function () {
-                /*
-                FlowRouter.go('/')
-                    .then(waitForSubscriptions)
-                    */
+                waitForSubscriptions();
+
             })
         }
 
         );
-        describe('sin hacer login', () => {
+        describe('Sin hacer login', () => {
             it('existen todas las preguntas', () => {
                 assert.equal(Preguntas.find().count(), 3);
             });
             it('existen todas las respuestas', () => {
                 assert.equal(Respuestas.find().count(), 3);
             });
+            /*
             it('renders the correct list when routed to', () => {
                 const list = Lists.findOne();
                 FlowRouter.go('Lists.show', { _id: list._id });
@@ -53,6 +51,7 @@ if (Meteor.isClient) {
                         assert.equal(Todos.find({ listId: list._id }).count(), 3);
                     });
             });
+            */
         });
     });
 }
