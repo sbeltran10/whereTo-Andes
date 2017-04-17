@@ -47,7 +47,7 @@ class Header extends Component {
                     <a className="nuevo"><AccountsUIWrapper/></a>
                 </div>
                 <br/>
-                <p className="intro"> Si te registras podras guardar todas las busquedas que hagas, pero aunque no te registres podras disfrutar de los demás servicios</p>
+                <p className="intro"> Si te registras podrás guardar todas las busquedas que hagas, pero aunque no te registres disfrutarás de los demás servicios</p>
                 <br/>
             </div>
         </section>

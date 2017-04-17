@@ -350,9 +350,17 @@ class App extends Component {
               }
               <div id="dinamico">
                 {this.state.modoCreacion ?
-                  <section id="modo-creacion" className="about section">
-                    <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
-                  </section> : ''
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-md-2">
+                      </div>
+                      <div className="col-md-10">
+                        <section id="modo-creacion" className="about section">
+                          <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+                        </section>
+                      </div>
+                    </div>
+                  </div>: ''
                 }
                 {this.state.modoEliminacion ?
                   <section id="eliminacion" className="about section">
