@@ -57,7 +57,6 @@ if (Meteor.isServer) {
                         return users[0];
                     };
 
-                    console.log(Meteor.user());
                     // Encontrar la definicion del metodo
                     const insertPregunta = Meteor.server.method_handlers['preguntas.insert'];
                     // Invocacion falsa del metodo
@@ -65,10 +64,10 @@ if (Meteor.isServer) {
                     // Correr el metodo y verificar resultado
                     try {
                         insertPregunta.apply({ userId }, [preguntaAInsertar]);
-                        assert.fail(Preguntas.find().count(), 0);
+                        assert.fail(Preguntas.find().count(), 0, "Se deberia generar un error");
                     }
                     catch (e) {
-                        assert.equal(e.error, 'not-authorized');
+                        assert.equal(e.error, 'not-authorized', "El error deberia se por autorizacion");
                     }
                 });
 
@@ -86,7 +85,7 @@ if (Meteor.isServer) {
                     // Correr el metodo
                     insertPregunta.apply(userIdadmin, [preguntaAInsertar]);
                     // Verifica que el metodo hizo lo que se esperaba
-                    assert.equal(Preguntas.find().count(), 1);
+                    assert.equal(Preguntas.find().count(), 1, "Se deberia encontrar la pregunta recien agregada");
                 });
             });
 
@@ -101,7 +100,7 @@ if (Meteor.isServer) {
 
 
                 });
-                it('Un usuario con privilegios de administrador insertar una respuesta a una pregunta existente', function () {
+                it('Un usuario con privilegios de administrador inserta una respuesta a una pregunta existente', function () {
                     Meteor.user = function () {
                         const users = Meteor.users.find({ _id: userIdadmin }).fetch();
                         if (!users || users.length > 1)
@@ -109,13 +108,33 @@ if (Meteor.isServer) {
                         return users[0];
                     };
 
-                    console.log(Meteor.user());
                     // Encontrar la definicion del metodo
                     const insertRespuesta = Meteor.server.method_handlers['preguntas.insertRespuesta'];
                     // Invocacion falsa del metodo
                     const invocation = { userIdadmin };
                     // Correr el metodo y verificar resultado
-                    console.log(insertRespuesta.apply({ userIdadmin }, [preguntaId, respuestaId]));
+                    assert.equal(insertRespuesta.apply({ userIdadmin }, [preguntaId, respuestaId]), 1, "Se deberia returnar 1, indicando que se agrego la respuesta");
+                });
+                it('Un usuario con privilegios de administrador no puede insertar una respuesta invalida a una pregunta existente', function () {
+                    Meteor.user = function () {
+                        const users = Meteor.users.find({ _id: userIdadmin }).fetch();
+                        if (!users || users.length > 1)
+                            throw new Error("Meteor.user() mock no puede encontrar al usuario.");
+                        return users[0];
+                    };
+
+                    // Encontrar la definicion del metodo
+                    const insertRespuesta = Meteor.server.method_handlers['preguntas.insertRespuesta'];
+                    // Invocacion falsa del metodo
+                    const invocation = { userIdadmin };
+                    // Correr el metodo y verificar resultado
+                    try {
+                        var result = insertRespuesta.apply({ userIdadmin }, [preguntaId, new Mongo.ObjectID('id invalido')]);
+                        assert.fail(result, 1, "Se deberia arrojar un error");
+                    }
+                    catch (e) {
+                        assert.isDefined(e, "El error deberia estar definido");
+                    }
                 });
 
             });
@@ -141,10 +160,10 @@ if (Meteor.isServer) {
                     // Correr el metodo y verificar resultado
                     try {
                         removePregunta.apply({ userId }, [preguntaId]);
-                        assert.fail(Preguntas.find().count(), 1);
+                        assert.fail(Preguntas.find().count(), 1, "Se deberia generar un error");
                     }
                     catch (e) {
-                        assert.equal(e.error, 'not-authorized');
+                        assert.equal(e.error, 'not-authorized', "Se deberia generar un error por autorizacion");
                     }
                 });
 
@@ -162,8 +181,60 @@ if (Meteor.isServer) {
                     // Correr el metodo
                     removePregunta.apply(userIdadmin, [preguntaId]);
                     // Verifica que el metodo hizo lo que se esperaba
-                    assert.equal(Preguntas.find().count(), 0);
+                    assert.equal(Preguntas.find().count(), 0, "Se deberia haber eliminado la pregunta");
                 });
+            });
+
+            describe('removeHijo', function () {
+                beforeEach(function () {
+
+                    resetDatabase(null);
+                    preguntaId = Preguntas.insert(preguntaAInsertar);
+                    respuestaId = Respuestas.insert(respuestaAInsertar);
+                    userIdadmin = Accounts.createUser(testUserAdmin);
+                    userId = Accounts.createUser(testUser);
+                    Preguntas.update({ _id: preguntaId }, { $push: { respuestasHijo: respuestaId } });
+
+                });
+                it('Un usuario con privilegios de administrador elimina la respuesta con el id dado de la pregunta', function () {
+                    Meteor.user = function () {
+                        const users = Meteor.users.find({ _id: userIdadmin }).fetch();
+                        if (!users || users.length > 1)
+                            throw new Error("Meteor.user() mock no puede encontrar al usuario.");
+                        return users[0];
+                    };
+
+                    // Encontrar la definicion del metodo
+                    const removeHijo = Meteor.server.method_handlers['preguntas.removeHijo'];
+                    // Invocacion falsa del metodo
+                    const invocation = { userIdadmin };
+                    // Correr el metodo y verificar resultado
+                    assert.equal(removeHijo.apply({ userIdadmin }, [respuestaId]), 1, "Se deberia returnar 1, indicando que se elimino la respuesta");
+                });
+                it('Un usuario con privilegios de administrador no puede eliminar la respuesta con un id invalido de la pregunta', function () {
+                    Meteor.user = function () {
+                        const users = Meteor.users.find({ _id: userIdadmin }).fetch();
+                        if (!users || users.length > 1)
+                            throw new Error("Meteor.user() mock no puede encontrar al usuario.");
+                        return users[0];
+                    };
+
+                    // Encontrar la definicion del metodo
+                    const removeHijo = Meteor.server.method_handlers['preguntas.removeHijo'];
+                    // Invocacion falsa del metodo
+                    const invocation = { userIdadmin };
+                    // Correr el metodo y verificar resultado
+                    
+                    try {
+                        var result = removeHijo.apply({ userIdadmin }, [new Mongo.ObjectID('id invalido')]);
+                        assert.fail(result, 1, "Se deberia arrojar un error");
+                    }
+                    catch (e) {
+                        assert.isDefined(e, "El error deberia estar definido");
+                    }
+                    
+                });
+
             });
 
         });

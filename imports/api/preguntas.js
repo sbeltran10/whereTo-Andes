@@ -66,7 +66,7 @@ Meteor.methods({
         if (!respuestaId || Object.keys(respuestaId).length === 0) {
             throw new Meteor.Error('invalid-id', "El id de la respuesta a eliminar es invalido");
         }
-        return Preguntas.update({}, { "$pull": { "respuestasHijo": respuestaId } });
+        return Preguntas.update({}, { $pull: { respuestasHijo: respuestaId } });
     }
 
 });

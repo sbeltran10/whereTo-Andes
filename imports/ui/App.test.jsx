@@ -22,7 +22,7 @@ const waitForSubscriptions = () => new Promise(resolve => {
 //   (such as a route change) have occured. This makes it a promise.
 //const afterFlushPromise = denodeify(Tracker.afterFlush);
 if (Meteor.isClient) {
-    describe('data available when routed', () => {
+    describe('Datos disponibles', () => {
         // First, ensure the data that we expect is loaded on the server
         //   Then, route the app to the homepage
         beforeEach(function () {
