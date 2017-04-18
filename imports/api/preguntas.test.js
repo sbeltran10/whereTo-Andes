@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { Preguntas } from './preguntas.js';
 import { Respuestas } from './respuestas.js';
-import { Factory } from 'meteor/dburles:factory';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 

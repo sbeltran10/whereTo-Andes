@@ -5,6 +5,8 @@ import { Respuestas } from './respuestas.js';
 import { Resultados } from './resultados.js';
 import { Historias } from './historias.js';
 
+// NO SIRVEN POR LOS ESQUEMAS
+
 Factory.define('pregunta', Preguntas, {
     contenido: 'test contenido pregunta',
     respuestasHijo: []
