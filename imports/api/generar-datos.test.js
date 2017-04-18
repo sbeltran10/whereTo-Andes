@@ -6,6 +6,8 @@ import { Respuestas } from '../api/respuestas.js';
 import { Resultados } from '../api/resultados.js';
 import { Historias } from '../api/historias.js';
 
+// NO SIRVEN POR LOS ESQUEMAS
+
 const crearPreguntas = (userId) => {
     _.times(3, () => Preguntas.insert({
         contenido: "pregunta test 1",
