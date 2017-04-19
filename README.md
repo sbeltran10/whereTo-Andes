@@ -14,3 +14,14 @@ Para ejecutar los test:
 Los test se encuentran en:
 - Test de componentes de React: https://github.com/sbeltran10/whereTo-Andes/tree/master/imports/ui
 - Test unitarios: https://github.com/sbeltran10/whereTo-Andes/tree/master/imports/api
+
+Usabilidad:
+
+Los cambios se pueden ver en https://github.com/sbeltran10/whereTo-Andes/blob/master/Proyecto4-usabilidad.pdf
+
+O se pueden descargar:
+<object data="https://www.dropbox.com/s/93ils90nn0souxe/Proyecto4-usabilidad.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://www.dropbox.com/s/93ils90nn0souxe/Proyecto4-usabilidad.pdf">
+        This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/sbeltran10/whereTo-Andes/blob/master/Proyecto4-usabilidad.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
