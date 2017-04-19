@@ -32,7 +32,7 @@ if (Meteor.isServer) {
 Meteor.methods({
     'historias.insert'(historia) {
         // Verificacion de logeo y rol
-        if (!this.userId) {
+        if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
         return Historias.insert(historia);
