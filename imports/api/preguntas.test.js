@@ -40,12 +40,9 @@ if (Meteor.isServer) {
             }
             describe('insert', function () {
                 beforeEach(function () {
-
                     resetDatabase(null);
                     userIdadmin = Accounts.createUser(testUserAdmin);
                     userId = Accounts.createUser(testUser);
-
-
                 });
                 it('Un usuario sin privilegios de administrador no puede insertar una pregunta', function () {
                     Meteor.user = function () {
@@ -111,7 +108,7 @@ if (Meteor.isServer) {
                     // Invocacion falsa del metodo
                     const invocation = { userIdadmin };
                     // Correr el metodo y verificar resultado
-                    assert.equal(insertRespuesta.apply({ userIdadmin }, [preguntaId, respuestaId]), 1, "Se deberia returnar 1, indicando que se agrego la respuesta");
+                    assert.equal(insertRespuesta.apply({ userIdadmin }, [preguntaId, respuestaId]), 1, "Se deberia retornar 1, indicando que se agrego la respuesta");
                 });
                 it('Un usuario con privilegios de administrador no puede insertar una respuesta invalida a una pregunta existente', function () {
                     Meteor.user = function () {
@@ -222,7 +219,7 @@ if (Meteor.isServer) {
                     // Invocacion falsa del metodo
                     const invocation = { userIdadmin };
                     // Correr el metodo y verificar resultado
-                    
+
                     try {
                         var result = removeHijo.apply({ userIdadmin }, [new Mongo.ObjectID('id invalido')]);
                         assert.fail(result, 1, "Se deberia arrojar un error");
@@ -230,7 +227,7 @@ if (Meteor.isServer) {
                     catch (e) {
                         assert.isDefined(e, "El error deberia estar definido");
                     }
-                    
+
                 });
 
             });

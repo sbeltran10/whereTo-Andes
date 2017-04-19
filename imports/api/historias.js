@@ -31,14 +31,13 @@ if (Meteor.isServer) {
 
 Meteor.methods({
     'historias.insert'(historia) {
-
         // Verificacion de logeo y rol
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
         return Historias.insert(historia);
     },
-    'historias.remove'(historiaId) {
+    /*'historias.remove'(historiaId) {
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
@@ -46,5 +45,5 @@ Meteor.methods({
             throw new Meteor.Error('invalid-id', "El id de la historia a eliminar es invalido");
         }
         Historias.remove(historiaId);
-    },
+    },*/
 });
