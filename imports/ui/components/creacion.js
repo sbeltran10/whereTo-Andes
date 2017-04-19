@@ -19,7 +19,6 @@ class Creacion extends Component {
 		}
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		console.log(this.props.idPregunta);
 	}
 
 	limpiarCampos() {
