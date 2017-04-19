@@ -12,5 +12,5 @@ Para ejecutar los test:
 
 
 Los test se encuentran en:
-- Test de componentes de React: whereTo-Andes/imports/ui/
-- Test unitarios: whereTo-Andes/imports/api/
+- Test de componentes de React: https://github.com/sbeltran10/whereTo-Andes/tree/master/imports/ui
+- Test unitarios: https://github.com/sbeltran10/whereTo-Andes/tree/master/imports/api
