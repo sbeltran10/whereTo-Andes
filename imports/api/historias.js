@@ -35,6 +35,7 @@ Meteor.methods({
         if (!Meteor.user()) {
             throw new Meteor.Error('not-authorized');
         }
+        // podrian verificar que historia es del tipo que ustedes esperan
         return Historias.insert(historia);
     },
     /*'historias.remove'(historiaId) {

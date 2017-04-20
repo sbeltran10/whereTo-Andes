@@ -4,6 +4,7 @@ import { Respuestas } from './respuestas.js';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+//muy completas sus pruebas!
 if (Meteor.isServer) {
     describe('Preguntas', function () {
         describe('methods', function () {
