@@ -19,7 +19,6 @@ class Creacion extends Component {
 		}
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		console.log(this.props.idPregunta);
 	}
 
 	limpiarCampos() {
@@ -151,8 +150,8 @@ class Creacion extends Component {
 						}
 					</div>
 					<div className="modal-footer agregar-respuesta">
-						<button type="submit" href="#preguntas" className="btn btn-info btn-lg"><b>Crear respuesta</b></button>
-						<a className="btn btn-info btn-lg btn-cancelar-creacion" href="#preguntas" onClick={() => this.props.cancelarCreacion()}>
+						<button type="submit" href="#preguntas" className="btn btn-info btn-lg botones-creacion"><b>Crear respuesta</b></button>
+						<a className="btn btn-info btn-lg btn-cancelar-creacion botones-creacion" href="#preguntas" onClick={() => this.props.cancelarCreacion()}>
 							Cancelar
             </a>
 					</div>

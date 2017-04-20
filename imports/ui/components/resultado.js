@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Historias } from '../../api/historias.js';
+import { Meteor } from 'meteor/meteor';
 
 class Resultado extends Component {
 
@@ -32,7 +33,7 @@ class Resultado extends Component {
         {!this.props.resultado.nombre?
           <div className="row">
             <div className="col-md-12">
-              <h2 className="title text-center">Actualmente no contamos con una solución a tu problema, si lo deseas, puedes volver a una pregunta anterior y elegir una respuesta diferente.</h2>
+              <h2 className="title text-center sinSolucion">Actualmente no contamos con una solución a tu problema, si lo deseas, puedes volver a una pregunta anterior y elegir una respuesta diferente.</h2>
             </div>
           </div>:
           <div>
@@ -74,3 +75,7 @@ class Resultado extends Component {
 }
 
 export default Resultado;
+/*
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');*/

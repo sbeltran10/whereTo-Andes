@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Historia from './historia';
+import { Meteor } from 'meteor/meteor';
 import { Historias } from '../../api/historias.js';
 
 class HistoriasComponet extends Component {
@@ -7,13 +8,13 @@ class HistoriasComponet extends Component {
     render() {
       historias=[];
       var a = this;
-      Deps.autorun(function () {
+      Tracker.autorun(function () {
         historias = Historias.find({usuario:a.props.currentUser._id}).fetch();
       });
       return (
           <div>
             {historias.length ?
-              <div>
+              <div className="historias">
                 {historias.map((historia, index) => {
                     return <Historia key={index} historia={historia} cargarHistoria={this.props.cargarHistoria.bind(this)} />
                 })}
@@ -28,3 +29,8 @@ class HistoriasComponet extends Component {
 }
 
 export default HistoriasComponet;
+
+/*Meteor.subscribe('historias');
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');*/

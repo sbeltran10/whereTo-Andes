@@ -1,11 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
-
-/**Podrian quitar este import de axios para que no salga warning en el despliegue*/
-/*import axios from 'axios';*/
-
-import { Meteor } from 'meteor/meteor' ;
+import { Meteor } from 'meteor/meteor';
 import { Preguntas } from '../../api/preguntas.js';
 import { Respuestas } from '../../api/respuestas.js';
 import { Resultados } from '../../api/resultados.js';
@@ -13,12 +9,10 @@ import { Historias } from '../../api/historias.js';
 import RespuestasComponent from './respuestas';
 import ResultadoComponent from './resultado';
 import CreacionComponent from './creacion';
-import Registro from './registro';
 import HistoriasComponet from './historias';
 import Header from './Header.jsx'
 
 const PREGUNTA_INICIO = "58bb814fd5309c00110d995c";
-
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
@@ -43,7 +37,6 @@ class App extends Component {
 
     }
     this.cargarPregunta(PREGUNTA_INICIO);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -56,10 +49,9 @@ class App extends Component {
   }
 
   cargarPregunta(id) {
-    /*Les recomiendo usar let en estos casos porque una vez
-      me paso con promesas que var a veces no tiene comportamiento esperado**/
     var a = this;
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
+
       pregunta = Preguntas.findOne({ _id: new Mongo.ObjectID(id) });
       if (pregunta) {
         respuestasHijoId = pregunta.respuestasHijo;
@@ -77,7 +69,7 @@ class App extends Component {
         });
       }
     });
-    this.setState({
+    this.loadInterval && this.setState({
       respuestaAEliminar: null,
       modoEliminacion: false
     })
@@ -97,9 +89,22 @@ class App extends Component {
       pasos: pasos,
       contador: this.state.contador + 1
     });
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
+
       respuesta = Respuestas.findOne(id);
       if (respuesta) {
+        var pasos = a.state.pasos;
+        pasos.push({
+          pregunta: { _id: idPregunta },
+          respuesta: { _id: id }
+        });
+        a.loadInterval && a.setState({
+          pregunta: pregunta.contenido,
+          respuestas: respuestasHijo,
+          atras: true,
+          pasos: pasos,
+          contador: a.state.contador + 1
+        });
         if (respuesta.preguntasHijo[0]) {
           a.cargarPregunta(respuesta.preguntasHijo[0]._str);
         } else if (respuesta.resultadosHijo[0]) {
@@ -113,9 +118,10 @@ class App extends Component {
     var a = this;
     var pasos = this.state.pasos;
     pasos.push({
-      pregunta: { _id: id }
+      pregunta: { _id: id },
+      respuesta: { _id: id }
     });
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
       resultado = Resultados.findOne(id);
       if (resultado) {
         a.loadInterval && a.setState({
@@ -163,7 +169,6 @@ class App extends Component {
       pasos: this.state.pasos,
       usuario: this.props.currentUser._id
     }
-
     Meteor.call('historias.insert', historia);
     //alert("La historia ha sido creada de forma exitosa");
     $('html,body').animate({
@@ -174,7 +179,7 @@ class App extends Component {
 
   cargarHistoria(id) {
     var a = this;
-    Deps.autorun(function () {
+    Tracker.autorun(function () {
       historia = Historias.findOne(id);
       if (historia) {
         console.log(historia.pasos.length - 1);
@@ -244,7 +249,7 @@ class App extends Component {
           if (error) {
             console.log(error);
           } else {
-
+            console.log(result);
           }
         });
       }
@@ -273,7 +278,7 @@ class App extends Component {
     })
   }
 
-  handleSubmit(event) {
+  volverAnterior(event) {
     event.preventDefault();
     pasoAnterior = this.state.pasos.pop();
     if (this.state.resultadoBoolean) {
@@ -288,81 +293,113 @@ class App extends Component {
     this.cargarPregunta(pasoAnterior.pregunta._id._str);
   }
 
+  volverInicial(event) {
+    event.preventDefault();
+
+    this.setState({
+      contador: 1,
+      resultadoBoolean: false,
+      pasos: []
+    });
+    this.cargarPregunta(PREGUNTA_INICIO);
+  }
+
   render() {
     return (
       <div>
         <Header />
-        <div className="row">
-        <section id="preguntas" className="about section">
-          {this.state.resultadoBoolean ?
-            <section id="resultados" className="about section">
-              <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)} />
-            </section> :
-            <div>
-                <div className="col-md-12">
-                  <h2 className="title text-center">{this.state.pregunta}</h2>
+        <div className="container-fluid">
+          <div className="row">
+            <section id="preguntas" className="about section">
+              {this.state.resultadoBoolean ?
+                <section id="resultados" className="about section">
+                  <ResultadoComponent currentUser={this.props.currentUser} resultado={this.state.resultado} guardarHistoria={this.guardarHistoria.bind(this)} />
+                </section> :
+                <div>
+                  <div className="col-md-12">
+                    <h2 className="title text-center">{this.state.pregunta}</h2>
+                  </div>
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div id="esconder">
+                        <RespuestasComponent respuestaAEliminar={this.state.respuestaAEliminar} toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)}
+                          prepararRespuestaAEliminar={this.prepararRespuestaAEliminar.bind(this)} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div id="esconder">
-                  <RespuestasComponent respuestaAEliminar={this.state.respuestaAEliminar} toggleModoCreacion={this.toggleModoCreacion.bind(this)} currentUser={this.props.currentUser} idPregunta={this.state.idPregunta} pregunta={this.state.pregunta} respuestas={this.state.respuestas} cargarPregunta={this.cargarPregunta.bind(this)} cargarRespuesta={this.cargarRespuesta.bind(this)}
-                    prepararRespuestaAEliminar={this.prepararRespuestaAEliminar.bind(this)} />
+              }
+              {this.state.contador > 1 ?
+                <div className="container-fluid">
+                  <div className="row">
+                    <br />
+                    <br />
+                    <div className="col-md-1">
+                    </div>
+                    <div className="col-md-3">
+                      <a id="volverAPregunta" onClick={this.volverAnterior.bind(this)} className="btn btn-cta-primary">Volver a pregunta anterior</a>
+                    </div>
+                    {this.state.contador > 2 ?
+                      <div className="col-md-3">
+                        <a id="volverAPreguntaI" onClick={this.volverInicial.bind(this)} className="btn btn-cta-primary">Volver a pregunta inicial</a>
+                      </div>
+                      : ''}
+                  </div>
                 </div>
-            </div>
-          }
-          {this.state.contador > 1 ?
-            <div className="row">
-              <br />
-              <br />
-              <div className="col-md-1">
+                : ''
+              }
+              <div id="dinamico">
+                {this.state.modoCreacion ?
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-md-2">
+                      </div>
+                      <div className="col-md-10">
+                        <section id="modo-creacion" className="about section">
+                          <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
+                        </section>
+                      </div>
+                    </div>
+                  </div>: ''
+                }
+                {this.state.modoEliminacion ?
+                  <section id="eliminacion" className="about section">
+                    <div className="alert alert-danger ">
+                      <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
+                      ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#dinamico" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#dinamico" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
+                    </div>
+                  </section> : ''
+                }
+                {this.state.confirmacionResultado ?
+                  <section id="confirmacion" className="about section">
+                    <div className="alert alert-info ">
+                      <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
+                    </div>
+                  </section> : ''
+                }
               </div>
-              <div className="col-md-3">
-                <form id="userRegisterForm" onSubmit={this.handleSubmit}>
-                  <button type="submit" className="btn btn-cta-primary">Volver a pregunta anterior</button>
-                </form>
-              </div>
-            </div> :
-            ''
-          }
-          <div id="dinamico">
-            {this.state.modoCreacion ?
-              <section id="modo-creacion" className="about section">
-                <CreacionComponent confirmarCreacion={this.confirmarCreacion.bind(this)} cancelarCreacion={this.cancelarCreacion.bind(this)} idPregunta={this.state.idPregunta} cargarRespuesta={this.cargarRespuesta.bind(this)} />
-              </section> : ''
-            }
-            {this.state.modoEliminacion ?
-              <section id="eliminacion" className="about section">
-                <div className="alert alert-danger ">
-                  <strong>Peligro!</strong> Eliminar la respuesta <strong>"{this.state.respuestaAEliminar.contenido}"</strong> causara que su resultado o pregunta y respuestas subsecuentes sean eliminados tambien,
-             ¿Estas seguro que deseas eliminar esta respuesta? <a className="alert-link" href="#dinamico" onClick={() => this.eliminarRespuesta()}>Aceptar</a> ó <a className="alert-link" href="#dinamico" onClick={() => this.desactivarModoEliminacion()}>Rechazar</a>.
-        </div>
-              </section> : ''
-            }
-            {this.state.confirmacionResultado ?
-              <section id="confirmacion" className="about section">
-                <div className="alert alert-info ">
-                  <strong>Informacion:</strong> {this.state.confirmacionResultado}. <a className="alert-link" href="#dinamico" onClick={() => this.dismissConfirmacion()}>Aceptar</a>
-                </div>
-              </section> : ''
-            }
+            </section>
           </div>
-        </section>
         </div>
         {this.props.currentUser ?
-          <div className="row">
-            <section id="historiales" className="about section">
+          <div className="container-fluid">
+            <div className="row">
+              <section id="historiales" className="about section">
                 <div className="col-md-12">
                   <h2 className="title text-center">Historiales</h2>
                 </div>
                 <div className="col-md-12">
                   <HistoriasComponet currentUser={this.props.currentUser} cargarHistoria={this.cargarHistoria.bind(this)} />
                 </div>
-            </section>
-          </div>: ''
+              </section>
+            </div>
+          </div> : ''
         }
         <footer className="footer">
           <div className="text-center">
-                  <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub</a>
-                  Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br/>
-                <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+            <a href="https://github.com/sbeltran10/whereTo-Andes" target="_blank">Míralo en GitHub </a>
+            Desarrollado por: <a href="https://sbeltran10.github.io/SantiagoBeltranHomePage/" target="_blank">Santiago Beltran</a> y <a href="http://yodeb.co" target="_blank">Sergio Yodeb</a><br />
+            <small className="copyright">Designed with <i className="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
           </div>
         </footer>
       </div>
@@ -378,3 +415,8 @@ export default createContainer(() => {
     currentUser: Meteor.user(),
   };
 }, App);
+
+Meteor.subscribe('respuestas');
+Meteor.subscribe('preguntas');
+Meteor.subscribe('resultados');
+Meteor.subscribe('historias');
