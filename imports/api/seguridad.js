@@ -22,6 +22,7 @@ if (Meteor.isServer) {
 
 // Denegar a los usuarios actualizar la coleccion usuario
 //podrian tambien denegar los deletes desde el lado de los usuarios si quieren
+
 Meteor.users.deny({
   update() { return true; }
 });
