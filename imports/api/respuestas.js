@@ -33,7 +33,9 @@ Meteor.methods({
     'respuestas.insert'(respuesta) {
 
         // Verificacion de logeo y rol
+
         //solo los admin pueden hacer preguntas y dar respuestas?
+
         if (!Meteor.user() || Meteor.user().profile.role !== 'admin') {
             throw new Meteor.Error('not-authorized');
         }
