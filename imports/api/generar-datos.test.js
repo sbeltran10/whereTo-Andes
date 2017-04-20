@@ -40,4 +40,3 @@ if (Meteor.isClient) {
     const testConnection = Meteor.connect(Meteor.absoluteUrl());
 }
 export { generarDatos };
-

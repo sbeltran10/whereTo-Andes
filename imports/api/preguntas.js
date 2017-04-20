@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+//podrian quitar este check que no estan usando
 import { check } from 'meteor/check';
 
 export const Preguntas = new Mongo.Collection('preguntas', { idGeneration: 'MONGO' });
@@ -30,9 +31,14 @@ Meteor.methods({
 
         // Verificacion de logeo y rol
 
+        //solo los admin pueden hacer preguntas y dar respuestas?
+
         if (!Meteor.user() || Meteor.user().profile.role !== 'admin') {
             throw new Meteor.Error('not-authorized');
         }
+        // Les recomiendo mucho que validen si "pregunta" este bien definido antes de insertar
+        // Entiendo que no deberia suceder nada malo pues solo los admin pueden llegar hasta este punto
+        // pero tal vez no esta de más
         return Preguntas.insert(pregunta);
     },
     'preguntas.insertRespuesta'(idPregunta, idRespuesta) {
