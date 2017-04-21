@@ -6,6 +6,7 @@ import { Promise } from 'meteor/promise';
 import { generarDatos } from '../api/generar-datos.test.js';
 import { Preguntas } from '../api/preguntas.js';
 import { Respuestas } from '../api/respuestas.js';
+//imports sin usar
 import { Resultados } from '../api/resultados.js';
 import { Historias } from '../api/historias.js';
 
