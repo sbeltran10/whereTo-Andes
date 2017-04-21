@@ -3,6 +3,8 @@ import { Historias } from './historias.js';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+//Pueden usar el paquete faker para generar una fecha random
+
 if (Meteor.isServer) {
     describe('Historias', function () {
         describe('methods', function () {
@@ -62,6 +64,7 @@ if (Meteor.isServer) {
                         usuario: userId,
                         pasos: []
                   }
+                  //Bien por las pruebas de usuarios
                   // Encontrar la definicion del metodo
                   const insertHistoria = Meteor.server.method_handlers['historias.insert'];
                   // Invocacion falsa del metodo
