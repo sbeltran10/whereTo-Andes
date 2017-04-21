@@ -5,6 +5,8 @@ import { chai } from 'meteor/practicalmeteor:chai';
 import HistoriaComponet from './components/historia';
 import { Historias } from '../api/historias.js';
 
+//Pueden hacer uso del paquete faker para generar datos, hace falta probar mas partes del componente
+
 Factory.define("historia", Historias, {});
 if (!Meteor.isServer) {
 	describe("Historia", function () {
